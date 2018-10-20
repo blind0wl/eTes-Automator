@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Version 0.1 - Dave Payne 2018
+//eTes Automator for Timesheet automated completion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
