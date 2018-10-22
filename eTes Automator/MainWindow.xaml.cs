@@ -242,7 +242,7 @@ namespace eTes_Automator
         private async void btn_start_Click(object sender, RoutedEventArgs e)
         {
             DateTime currentDateTime = DateTime.Now;
-            if (btn_start.Content as string == "Start" && currentDateTime.Hour < 17 && (currentDateTime.DayOfWeek != DayOfWeek.Saturday) && (currentDateTime.DayOfWeek != DayOfWeek.Sunday))
+            if (btn_start.Content as string == "Start") //&& currentDateTime.Hour < 17 && (currentDateTime.DayOfWeek != DayOfWeek.Saturday) && (currentDateTime.DayOfWeek != DayOfWeek.Sunday))
             {
                 string etes = "https://etes.csc.com";
                 string test = comboBrowser.SelectedItem.ToString();
@@ -304,19 +304,21 @@ namespace eTes_Automator
                     {
                         List<string> dayArray = new List<string>();
                         List<string> hoursArray = new List<string>();
+                        List<IWebElement> buttonArray = new List<IWebElement>();
 
                         //Add the web form values into the dayArray list so we can compare what is in the form and what is in the settings.ini file.
                         for (int i = 0; i < 7; i++)
                         {
+                            buttonArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")));
                             dayArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")).GetAttribute("value"));
                         }
-
                         //Read the settings.ini hours into the hoursArray list
                         //TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
                         for (int i = 0; i < settingday.Length; i++)
                         {
                             hoursArray.Add(MyIni.Read(settingday[i], "Week"));
                         }
+                        
                         bool hoursmatch = true;
                         //Compare the hoursArray and dayArray Lists to see if they are the same...we might not need to do anything!
                         if (hoursmatch = !dayArray.Except(hoursArray).Any())
@@ -327,15 +329,18 @@ namespace eTes_Automator
                         {
                             MessageBox.Show("The Settings.ini file and the etes website hours do not match...going to try and populate now.");
                             //Dayoftheweek is based on C# DayOfWeek, Sunday = 0, Monday = 1 etc, so to check Monday it must go through Sat, Sun and then Monday (or two extra days)
-                            for (int i = 0; i <= dayoftheweek + 2; i++)
+                            for (int i = 0; i <= dayoftheweek + 1; i++)
                             {
                                 //Clear the contents of the web field and then input the settings.ini value that was saved in the main form.
 
                                 //Browser.browser.FindElement(By.Name(dayArray[i])).Clear();
                                 //Browser.browser.FindElement(By.Name(dayArray[i])).SendKeys(hoursArray[i]);
                                 //Same thing, just using Method instead
-                                Browser.FindNameClear(dayArray[i]);
-                                Browser.FindNameSendKeys(dayArray[i], hoursArray[i]);
+                                //Browser.browser.FindElement(By.Name(buttonArray[i].Text)).Clear();
+                                buttonArray[i].Clear();
+                                //Browser.FindNameClear(buttonArray[i]);
+                                //Browser.FindNameSendKeys(buttonArray[i].Text, hoursArray[i]);
+                                buttonArray[i].SendKeys(hoursArray[i]);
                             }
 
                         }
@@ -366,7 +371,7 @@ namespace eTes_Automator
         nothing:
             Browser.Close();
             btn_start.Content = "Start";
-            MessageBox.Show("Going back to application");j
+            MessageBox.Show("Going back to application");
         }
 
         
