@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.UI;
 
 
 namespace eTes_Automator
@@ -26,6 +27,13 @@ namespace eTes_Automator
             browser.Navigate().GoToUrl(Url);
         }
 
+        public static void WaitforBrowser(string title)
+        {
+            WebDriverWait wait = new WebDriverWait(browser, TimeSpan.FromSeconds(60));
+            //wait.Until<IWebElement>(d => d.FindElement(By.XPath("/html/frameset/frame[1]")));
+            wait.Until((d) => { return d.Title == title;  });
+        }
+
         public static void Close()
         {
             if (browser != null)
@@ -33,6 +41,11 @@ namespace eTes_Automator
                 browser.Quit();
                 browser = null;
             }
+        }
+
+        public static string FindByXpathTitle(string path, string title)
+        {
+            return browser.FindElement(By.XPath(path)).GetAttribute(title);
         }
 
         public static void FindByName(string Name)
@@ -70,6 +83,5 @@ namespace eTes_Automator
         {
             browser.SwitchTo().DefaultContent();
         }
-        
     }
 }
