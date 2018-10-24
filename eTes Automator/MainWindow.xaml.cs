@@ -72,8 +72,9 @@ namespace eTes_Automator
                 MyIni.Write("Thursday", "7.50", "Week");
                 MyIni.Write("Friday", "7.50", "Week");
                 MyIni.Write("WorkOrder", "1010 REGULAR HOURS", "WorkOrder");
-                MyIni.Write("Wait Time", "15", "Wait Time");
+                //MyIni.Write("Wait Time", "15", "Wait Time");
                 MyIni.Write("Browser", "Chrome", "Browser Choice");
+                MyIni.Write("ManualSubmit", "False", "Submit");
                 
 
                 //Set variables with Settings.ini values
@@ -84,8 +85,8 @@ namespace eTes_Automator
                 {
                     textboxes[i].Text = MyIni.Read(settingday[i], "Week");
                 }
-                waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
-                textWaittime.Text = Convert.ToString(waittime);
+                //waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
+                //textWaittime.Text = Convert.ToString(waittime);
 
                 //Read the values in Settings.ini for each day of the week, then populate the textbox with that value.
                 /*
@@ -124,8 +125,8 @@ namespace eTes_Automator
                     textboxes[i].Text = MyIni.Read(settingday[i], "Week");
                 }
 
-                waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
-                textWaittime.Text = Convert.ToString(waittime);
+                //waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
+                //textWaittime.Text = Convert.ToString(waittime);
                 var browserchoice = MyIni.Read("Browser", "Browser Choice");
                 if (browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
                 {
@@ -134,6 +135,15 @@ namespace eTes_Automator
                 else
                 {
                     comboBrowser.SelectedIndex = 1;
+                }
+                var fridaycheck = MyIni.Read("ManualSubmit", "Submit");
+                if (fridaycheck == "True")
+                {
+                    fridayCheckBox.IsChecked = true;
+                }
+                else
+                {
+                    fridayCheckBox.IsChecked = false;
                 }
 
                 
@@ -209,9 +219,10 @@ namespace eTes_Automator
             {
                 MyIni.Write(settingday[i], textboxes[i].Text, "Week");
             }
-            MyIni.Write("Wait Time", textWaittime.Text, "Wait Time");
+            //MyIni.Write("Wait Time", textWaittime.Text, "Wait Time");
             
             MyIni.Write("Browser", comboBrowser.SelectedItem.ToString(), "Browser Choice");
+            MyIni.Write("ManualSubmit", fridayCheckBox.IsChecked.ToString(), "Submit");
             /*
             //Set default values for days of the week
             MyIni.Write("Saturday", textSat.Text, "Week");
@@ -338,22 +349,36 @@ namespace eTes_Automator
                             buttonArray[i].SendKeys(hoursArray[i]);
                             
                         }
-                        MessageBoxResult saveYesNo = MessageBox.Show("Would you like to Save the timesheet?", "Save Timesheet", MessageBoxButton.YesNo);
-                        if (saveYesNo == MessageBoxResult.Yes)
+                        if (dayoftheweek == 5 && fridayCheckBox.IsChecked == true)
                         {
-                            Browser.DefaultFrame();
-                            Browser.SwitchFrame("/html/frameset/frame[3]");
-                            Browser.FindByXPathClick("/html/body/table/tbody/tr/td/form/a[1]");     //Click Save
-                            Browser.browser.SwitchTo().Alert().Accept();
-                            //goto Alldone;
+                            MessageBox.Show("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
+                            goto Review;
                         }
                         else
                         {
-                            MessageBox.Show("You have said NO...noone says no to me!!!!");
-                            goto Alldone;
+                            MessageBoxResult saveYesNo = MessageBox.Show("Would you like to Save the timesheet?", "Save Timesheet", MessageBoxButton.YesNo);
+                            if (saveYesNo == MessageBoxResult.Yes)
+                            {
+                                Browser.DefaultFrame();
+                                Browser.SwitchFrame("/html/frameset/frame[3]");
+                                Browser.FindByXPathClick("/html/body/table/tbody/tr/td/form/a[1]");     //Click Save
+                                Browser.browser.SwitchTo().Alert().Accept();
+                                //goto Alldone;
+                            }
+                            else
+                            {
+                                MessageBox.Show("You have said NO...noone says no to me!!!!");
+                                goto Alldone;
+                            }
                         }
+                        
 
                     }
+                    
+
+                    
+
+
                 }
                 else
                 {
@@ -365,9 +390,12 @@ namespace eTes_Automator
                 MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             Alldone:
-                //Browser.Close();
+                Browser.Close();
                 btn_start.Content = "Start";
                 MessageBox.Show("Going back to application");
+        Review:
+            MessageBox.Show("Click Stop to close the browser once happy with the changes.");
+
         }
     }
 }

@@ -50,6 +50,7 @@
                         <ComboBoxItem Content="Firefox" HorizontalAlignment="Left" Width="118"/>                        
                     </ComboBox>
                     <TextBlock x:Name="textBlock9" Grid.Column="1" HorizontalAlignment="Left" Margin="625,8,0,0" TextWrapping="Wrap" Text="Default Browser:" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="fridayCheckBox" Content="Manually submit on Friday" Grid.Column="1" HorizontalAlignment="Left" Margin="34,320,0,0" VerticalAlignment="Top" ToolTip="Check this if you want to review the timesheet before submitting.  Leaving this unticked will automatically submit your timesheet on Friday."/>
                 </Grid>
             </TabItem>
             <TabItem Header="Log">
