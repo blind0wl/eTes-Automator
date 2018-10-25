@@ -40,7 +40,7 @@
                     <TextBox x:Name="textWed" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="289,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
                     <TextBox x:Name="textThur" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="355,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
                     <TextBox x:Name="textFri" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="414,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
-                    <TextBox x:Name="textWaittime" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="120,272,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40"/>
+                    <TextBox x:Name="textWaittime" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="120,272,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40" IsEnabled="False"/>
                     <Button x:Name="btn_start" Content="Start" Grid.Column="1" HorizontalAlignment="Left" Margin="670,350,0,0" VerticalAlignment="Top" Width="75" Click="btn_start_Click"/>
                     <Button x:Name="btn_Apply" Content="Apply" Grid.Column="1" HorizontalAlignment="Left" Margin="580,350,0,0" VerticalAlignment="Top" Width="75" Click="btn_Apply_Click"/>
                     <TextBlock x:Name="textBWait" Grid.Column="1" HorizontalAlignment="Left" Margin="34,272,0,0" TextWrapping="Wrap" Text="Wait Time (ms):" VerticalAlignment="Top"/>
@@ -59,6 +59,7 @@
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="129*"/>
                     </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="textBlock10" Grid.Column="1" HorizontalAlignment="Left" Margin="0,29,0,0" TextWrapping="Wrap" Text="This has not been implemented yet" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Services">
@@ -67,6 +68,7 @@
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="129*"/>
                     </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="textBlock11" Grid.Column="1" HorizontalAlignment="Left" Margin="0,29,0,0" TextWrapping="Wrap" Text="This has not been implemented yet" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
 

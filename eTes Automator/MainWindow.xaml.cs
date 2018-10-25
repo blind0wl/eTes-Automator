@@ -19,7 +19,8 @@ using AesEncDec;
 using System.IO;
 using Path = System.IO.Path;
 using OpenQA.Selenium;
-
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace eTes_Automator
 {
@@ -28,14 +29,26 @@ namespace eTes_Automator
     /// </summary>
     public partial class MainWindow : Window
     {
+        NotifyIcon nIcon = new NotifyIcon();
+
         private string decusr = string.Empty;
         private string decpass = string.Empty;
         private string[] settingday = new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };        
-        private int waittime = 15000;
+        //private int waittime = 15000;
 
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            // Hide main window when the program begins
+            ShowInTaskbar = true;
+            //Visibility = Visibility.Hidden;
+            WindowState = System.Windows.WindowState.Normal;
+
+            nIcon.Icon = new Icon(@"../../eTes.ico");
+            nIcon.Visible = true;
+            nIcon.Text = "Check for updates";
+            //nIcon.ShowBalloonTip(3000, "", "Check for updates", ToolTipIcon.Info);
 
             if (File.Exists("data\\data.ls"))
             {
@@ -55,7 +68,7 @@ namespace eTes_Automator
             }
             else
             {
-                MessageBox.Show("Ensure you fill out the login and password details and Apply.");
+                System.Windows.MessageBox.Show("Ensure you fill out the login and password details and Apply.");
             }
 
             if (!File.Exists("Settings.ini"))
@@ -75,12 +88,12 @@ namespace eTes_Automator
                 //MyIni.Write("Wait Time", "15", "Wait Time");
                 MyIni.Write("Browser", "Chrome", "Browser Choice");
                 MyIni.Write("ManualSubmit", "False", "Submit");
-                
+
 
                 //Set variables with Settings.ini values
                 //string[] settingday = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };             
                 //TextBox[] textboxes = { textMon, textTue, textWed, textThur, textFri, textSat, textSun };
-                TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
+                System.Windows.Controls.TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
                 for (int i = 0; i < settingday.Length; i++)
                 {
                     textboxes[i].Text = MyIni.Read(settingday[i], "Week");
@@ -119,7 +132,7 @@ namespace eTes_Automator
 
                 //string[] settingday = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
                 //TextBox[] textboxes = { textMon, textTue, textWed, textThur, textFri, textSat, textSun };
-                TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
+                System.Windows.Controls.TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
                 for (int i = 0; i < settingday.Length; i++)
                 {
                     textboxes[i].Text = MyIni.Read(settingday[i], "Week");
@@ -179,7 +192,7 @@ namespace eTes_Automator
         {
             if (textUsername.Text.Length < 3 || passwordBox.Password.Length < 5)
             {
-                MessageBox.Show("Username or Password is invalid");
+                System.Windows.MessageBox.Show("Username or Password is invalid");
             }
             else
             {
@@ -196,7 +209,7 @@ namespace eTes_Automator
                 sw.WriteLine(encpass);
                 sw.Close();
 
-                MessageBox.Show(String.Format("User {0} configuration was successfully saved.", textUsername.Text));
+                System.Windows.MessageBox.Show(String.Format("User {0} configuration was successfully saved.", textUsername.Text));
 
                 var sr = new StreamReader("data\\data.ls");
 
@@ -214,7 +227,7 @@ namespace eTes_Automator
 
             }
             var MyIni = new IniFile("Settings.ini");
-            TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
+            System.Windows.Controls.TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
             for (int i = 0; i < settingday.Length; i++)
             {
                 MyIni.Write(settingday[i], textboxes[i].Text, "Week");
@@ -251,11 +264,13 @@ namespace eTes_Automator
         
         }
 
-        private async void btn_start_Click(object sender, RoutedEventArgs e)
+        private void btn_start_Click(object sender, RoutedEventArgs e) //add private async void if need to use async again for wait time.
         {
             DateTime currentDateTime = DateTime.Now;
-            if (btn_start.Content as string == "Start") //&& currentDateTime.Hour < 17 && (currentDateTime.DayOfWeek != DayOfWeek.Saturday) && (currentDateTime.DayOfWeek != DayOfWeek.Sunday))
+            int dayoftheweek = (int)currentDateTime.DayOfWeek;
+            if (btn_start.Content as string == "Start" && dayoftheweek >= 1 && dayoftheweek <= 5) //&& currentDateTime.Hour < 17)
             {
+                btn_start.Content = "Stop";
                 string etes = "https://etes.csc.com";
                 if (comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Chrome")
                 {
@@ -267,10 +282,8 @@ namespace eTes_Automator
                 }
                 else
                 {
-                    MessageBox.Show("Something went wrong with your choice, make sure you have the browser you've chosen installed.");
+                    System.Windows.MessageBox.Show("Something went wrong with your choice, make sure you have the browser you've chosen installed.");
                 }
-                
-                btn_start.Content = "Stop";
                 //Enter Username and Password fields of the VIP Access page - using existing saved username and pass
                 Browser.WaitforBrowser("Sign In");
                 //await Task.Delay(5000);
@@ -296,10 +309,9 @@ namespace eTes_Automator
                 Browser.SwitchFrame("/html/frameset/frame[2]");
 
                 string title2check = Browser.FindByXpathTitle("/html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a", "title");
-                //string titlecheck = Browser.browser.FindElement(By.XPath("/html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a")).GetAttribute("title");
                 if (title2check != "REGULAR HOURS")
                 {
-                    MessageBox.Show("New Week has started, populating Work Order for you now");
+                    System.Windows.MessageBox.Show("New Week has started, populating Work Order for you now");
                     string workorder = Browser.browser.FindElement(By.Id("QE")).GetAttribute("value");
                     if (workorder == "REGULAR HOURS")
                     {
@@ -307,95 +319,78 @@ namespace eTes_Automator
                     }
                     else
                     {
-                        MessageBox.Show("Can't create the workorder as it does not follow the standard 1010 REGULAR HOURS expected. Going to close the browser, you will need to create a WORKORDER in the timesheet manually.");
-                        goto Alldone;
+                        System.Windows.MessageBox.Show("Can't create the workorder as it does not follow the standard 1010 REGULAR HOURS expected. Going to close the browser, you will need to create a WORKORDER in the timesheet manually.");
+                        Browser.Close();
+                        btn_start.Content = "Start";
+                        return;
                     }
                 }
-                //Check that the current day is within the time period that you can enter data into the fields...Monday to Friday.  Shouldnt matter much once it is scheduled.
-                int dayoftheweek = (int)currentDateTime.DayOfWeek;
-                if (dayoftheweek >= 1 && dayoftheweek <= 5)
+                List<string> dayArray = new List<string>();
+                List<string> hoursArray = new List<string>();
+                List<IWebElement> buttonArray = new List<IWebElement>();
+
+                //Add the web form values into the dayArray list so we can compare what is in the form and what is in the settings.ini file.
+                for (int i = 0; i < 7; i++)
                 {
-                    List<string> dayArray = new List<string>();
-                    List<string> hoursArray = new List<string>();
-                    List<IWebElement> buttonArray = new List<IWebElement>();
-
-                    //Add the web form values into the dayArray list so we can compare what is in the form and what is in the settings.ini file.
-                    for (int i = 0; i < 7; i++)
-                    {
-                        buttonArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")));
-                        dayArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")).GetAttribute("value"));
-                    }
-                    //Read the settings.ini hours into the hoursArray list
-                    //TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
-                    for (int i = 0; i < settingday.Length; i++)
-                    {
-                        hoursArray.Add(MyIni.Read(settingday[i], "Week"));
-                    }
+                    buttonArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")));
+                    dayArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")).GetAttribute("value"));
+                }
+                //Read the settings.ini hours into the hoursArray list
+                //TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
+                for (int i = 0; i < settingday.Length; i++)
+                {
+                    hoursArray.Add(MyIni.Read(settingday[i], "Week"));
+                }
                         
-                    bool hoursmatch = true;
-                    //Compare the hoursArray and dayArray Lists to see if they are the same...we might not need to do anything!
-                    if (hoursmatch = !dayArray.Except(hoursArray).Any())
-                    {
-                        MessageBox.Show("The Settings.ini file and whats on the etes page matches");
-                    }
-                    else
-                    {
-                        MessageBox.Show("The Settings.ini file and the etes website hours do not match...going to try and populate now.");
-                        //Dayoftheweek is based on C# DayOfWeek, Sunday = 0, Monday = 1 etc, so to check Monday it must go through Sat, Sun and then Monday (or two extra days)
-                        for (int i = 0; i <= dayoftheweek + 1; i++)
-                        {
-                            //Clear the contents of the web field and then input the settings.ini value that was saved in the main form.
-                            buttonArray[i].Clear();
-                            buttonArray[i].SendKeys(hoursArray[i]);
-                            
-                        }
-                        if (dayoftheweek == 5 && fridayCheckBox.IsChecked == true)
-                        {
-                            MessageBox.Show("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
-                            goto Review;
-                        }
-                        else
-                        {
-                            MessageBoxResult saveYesNo = MessageBox.Show("Would you like to Save the timesheet?", "Save Timesheet", MessageBoxButton.YesNo);
-                            if (saveYesNo == MessageBoxResult.Yes)
-                            {
-                                Browser.DefaultFrame();
-                                Browser.SwitchFrame("/html/frameset/frame[3]");
-                                Browser.FindByXPathClick("/html/body/table/tbody/tr/td/form/a[1]");     //Click Save
-                                Browser.browser.SwitchTo().Alert().Accept();
-                                //goto Alldone;
-                            }
-                            else
-                            {
-                                MessageBox.Show("You have said NO...noone says no to me!!!!");
-                                goto Alldone;
-                            }
-                        }
-                        
-
-                    }
-                    
-
-                    
-
-
+                bool hoursmatch = true;
+                //Compare the hoursArray and dayArray Lists to see if they are the same...we might not need to do anything!
+                if (hoursmatch = !dayArray.Except(hoursArray).Any())
+                {
+                    System.Windows.MessageBox.Show("The Settings.ini file and whats on the etes page matches");
                 }
                 else
                 {
-                    MessageBox.Show("Outside of acceptable day range.");
+                    System.Windows.MessageBox.Show("The Settings.ini file and the etes website hours do not match...going to try and populate now.");
+                    //Dayoftheweek is based on C# DayOfWeek, Sunday = 0, Monday = 1 etc, so to check Monday it must go through Sat, Sun and then Monday (or two extra days)
+                    for (int i = 0; i <= dayoftheweek + 1; i++)
+                    {
+                        //Clear the contents of the web field and then input the settings.ini value that was saved in the main form.
+                        buttonArray[i].Clear();
+                        buttonArray[i].SendKeys(hoursArray[i]);
+                            
+                    }
+                    if (dayoftheweek == 5 && fridayCheckBox.IsChecked == true)
+                    {
+                        System.Windows.MessageBox.Show("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
+                        return;
+                    }
+                    else
+                    {
+                        System.Windows.MessageBoxResult saveYesNo = System.Windows.MessageBox.Show("Would you like to Save the timesheet?", "Save Timesheet", MessageBoxButton.YesNo);
+                        if (saveYesNo == MessageBoxResult.Yes)
+                        {
+                            Browser.DefaultFrame();
+                            Browser.SwitchFrame("/html/frameset/frame[3]");
+                            Browser.FindByXPathClick("/html/body/table/tbody/tr/td/form/a[1]");     //Click Save
+                            Browser.browser.SwitchTo().Alert().Accept();
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("You have said NO...noone says no to me!!!!");
+                            return;
+                        }
+                    }
                 }
             }   
-            else
+            else if (btn_start.Content as string == "Stop")
             {
-                MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            Alldone:
                 Browser.Close();
                 btn_start.Content = "Start";
-                MessageBox.Show("Going back to application");
-        Review:
-            MessageBox.Show("Click Stop to close the browser once happy with the changes.");
-
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
     }
 }
