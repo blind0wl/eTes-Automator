@@ -29,7 +29,7 @@ namespace eTes_Automator
     /// </summary>
     public partial class MainWindow : Window
     {
-        NotifyIcon nIcon = new NotifyIcon();
+        readonly NotifyIcon nIcon = new NotifyIcon();
 
         private string decusr = string.Empty;
         private string decpass = string.Empty;
@@ -202,8 +202,8 @@ namespace eTes_Automator
 
                 var sw = new StreamWriter("data\\data.ls");
 
-                string encusr = AesCrypt.Encrypt(textUsername.Text);
-                string encpass = AesCrypt.Encrypt(passwordBox.Password);
+                var encusr = AesCrypt.Encrypt(textUsername.Text);
+                var encpass = AesCrypt.Encrypt(passwordBox.Password);
                 
                 sw.WriteLine(encusr);
                 sw.WriteLine(encpass);
@@ -213,8 +213,8 @@ namespace eTes_Automator
 
                 var sr = new StreamReader("data\\data.ls");
 
-                string r_encusr = sr.ReadLine();
-                string r_encpass = sr.ReadLine();
+                var r_encusr = sr.ReadLine();
+                var r_encpass = sr.ReadLine();
                 sr.Close();
 
                 decusr = AesCrypt.Decrypt(r_encusr);
@@ -308,23 +308,28 @@ namespace eTes_Automator
                 //Switch Frame to the time entries
                 Browser.SwitchFrame("/html/frameset/frame[2]");
 
-                string title2check = Browser.FindByXpathTitle("/html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a", "title");
-                if (title2check != "REGULAR HOURS")
+                try
                 {
-                    System.Windows.MessageBox.Show("New Week has started, populating Work Order for you now");
-                    string workorder = Browser.browser.FindElement(By.Id("QE")).GetAttribute("value");
-                    if (workorder == "REGULAR HOURS")
+                    string title2Check = Browser.FindByXpathTitle("/html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a", "title");
+                    if (title2Check != "REGULAR HOURS")
                     {
-                        Browser.IDClick("addfromqw");
-                    }
-                    else
-                    {
-                        System.Windows.MessageBox.Show("Can't create the workorder as it does not follow the standard 1010 REGULAR HOURS expected. Going to close the browser, you will need to create a WORKORDER in the timesheet manually.");
+                        System.Windows.MessageBox.Show("Can't create the workorder as it does not follow the standard 1010 REGULAR HOURS expected. Going to close the browser, you will need to create a WORKORDER in the timesheet manually.  Or make sure that the REGULAR HOURS option is the default in the drop-down at page start.");
                         Browser.Close();
                         btn_start.Content = "Start";
                         return;
+                        
                     }
                 }
+                catch
+                {
+                    System.Windows.MessageBox.Show("New Week has started, populating Work Order for you now");
+                    string workorder = Browser.browser.FindElement(By.Id("QE")).GetAttribute("value");
+                    if (workorder.Contains("REGULAR HOURS"))
+                    {
+                        Browser.IDClick("addfromqe");
+                    }
+                }
+
                 List<string> dayArray = new List<string>();
                 List<string> hoursArray = new List<string>();
                 List<IWebElement> buttonArray = new List<IWebElement>();
@@ -344,7 +349,7 @@ namespace eTes_Automator
                         
                 bool hoursmatch = true;
                 //Compare the hoursArray and dayArray Lists to see if they are the same...we might not need to do anything!
-                if (hoursmatch = !dayArray.Except(hoursArray).Any())
+                if (hoursmatch == !dayArray.Except(hoursArray).Any())
                 {
                     System.Windows.MessageBox.Show("The Settings.ini file and whats on the etes page matches");
                 }
