@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,12 +44,20 @@ namespace eTes_Automator
             // Hide main window when the program begins
             ShowInTaskbar = true;
             //Visibility = Visibility.Hidden;
-            WindowState = System.Windows.WindowState.Normal;
+            //WindowState = System.Windows.WindowState.Normal;
 
-            nIcon.Icon = new Icon(@"../../eTes.ico");
+            nIcon.Icon = new Icon(@"../../images/clock.ico");
             nIcon.Visible = true;
-            nIcon.Text = "Check for updates";
-            //nIcon.ShowBalloonTip(3000, "", "Check for updates", ToolTipIcon.Info);
+            nIcon.Text = "eTes Automator";
+            nIcon.DoubleClick +=
+                   delegate (object sender, EventArgs args)
+                   {
+                       this.Show();
+                       this.WindowState = WindowState.Normal;
+                   };
+            System.Windows.Forms.ContextMenu notifyIconContextMenu = new System.Windows.Forms.ContextMenu();
+            notifyIconContextMenu.MenuItems.Add("Quit", new EventHandler(Quit));
+            nIcon.ContextMenu = notifyIconContextMenu;
 
             if (File.Exists("data\\data.ls"))
             {
@@ -186,8 +195,30 @@ namespace eTes_Automator
             }
 
             
-    }
-        
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (WindowState == System.Windows.WindowState.Minimized)
+                this.Hide();
+
+            base.OnStateChanged(e);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+
+            base.OnClosing(e);
+        }
+
+        private void Quit(object sender, EventArgs e)
+        {
+            nIcon.Dispose();
+            Environment.Exit(0);
+        }
+
         private void btn_Apply_Click(object sender, RoutedEventArgs e)
         {
             if (textUsername.Text.Length < 3 || passwordBox.Password.Length < 5)
@@ -266,6 +297,7 @@ namespace eTes_Automator
 
         private void btn_start_Click(object sender, RoutedEventArgs e) //add private async void if need to use async again for wait time.
         {
+            nIcon.ShowBalloonTip(3000, "eTes Automator", "Filling out your timesheet", ToolTipIcon.Info);
             DateTime currentDateTime = DateTime.Now;
             int dayoftheweek = (int)currentDateTime.DayOfWeek;
             if (btn_start.Content as string == "Start" && dayoftheweek >= 1 && dayoftheweek <= 5) //&& currentDateTime.Hour < 17)
