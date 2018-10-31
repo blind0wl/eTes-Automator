@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="eTes Automator" Height="450" Width="800" WindowStartupLocation="CenterScreen" Icon="images\clock.ico">
+        Title="eTes Automator v0.1" Height="450" Width="800" MinHeight="450" MinWidth="800" MaxHeight="450" MaxWidth="800" WindowStartupLocation="CenterScreen" Icon="images\clock.ico">
     <Grid>
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
             <TabItem x:Name="tabConfiguration" Header="Configuration">
@@ -39,14 +39,14 @@
                     <TextBox x:Name="textWed" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="289,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
                     <TextBox x:Name="textThur" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="355,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
                     <TextBox x:Name="textFri" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="414,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
-                    <TextBox x:Name="textWaittime" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="120,272,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40" IsEnabled="False"/>
+                    <TextBox x:Name="textWaittime" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="120,272,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="40" Visibility="Hidden"/>
                     <Button x:Name="btn_start" Content="Start" Grid.Column="1" HorizontalAlignment="Left" Margin="670,350,0,0" VerticalAlignment="Top" Width="75" Click="btn_start_Click"/>
                     <Button x:Name="btn_Apply" Content="Apply" Grid.Column="1" HorizontalAlignment="Left" Margin="580,350,0,0" VerticalAlignment="Top" Width="75" Click="btn_Apply_Click"/>
-                    <TextBlock x:Name="textBWait" Grid.Column="1" HorizontalAlignment="Left" Margin="34,272,0,0" TextWrapping="Wrap" Text="Wait Time (ms):" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="textBlock8" Grid.Column="1" HorizontalAlignment="Left" Margin="165,277,0,0" TextWrapping="Wrap" Text="Default: 15 secs" VerticalAlignment="Top" FontSize="10"/>
-                    <ComboBox x:Name="comboBrowser" Grid.Column="1" HorizontalAlignment="Left" Margin="625,26,0,0" VerticalAlignment="Top" Width="120">
+                    <TextBlock x:Name="textBWait" Grid.Column="1" HorizontalAlignment="Left" Margin="34,272,0,0" TextWrapping="Wrap" Text="Wait Time (ms):" VerticalAlignment="Top" Visibility="Hidden"/>
+                    <TextBlock x:Name="textBlock8" Grid.Column="1" HorizontalAlignment="Left" Margin="165,277,0,0" TextWrapping="Wrap" Text="Default: 15 secs" VerticalAlignment="Top" FontSize="10" Visibility="Hidden"/>
+                    <ComboBox x:Name="comboBrowser" Grid.Column="1" HorizontalAlignment="Left" Margin="625,26,0,0" VerticalAlignment="Top" Width="120" DropDownClosed="comboBrowser_DropDownClosed">
                         <ComboBoxItem Content="Chrome" HorizontalAlignment="Left" Width="118"/>
-                        <ComboBoxItem Content="Firefox" HorizontalAlignment="Left" Width="118"/>                        
+                        <ComboBoxItem Content="Firefox" HorizontalAlignment="Left" Width="118"/>
                     </ComboBox>
                     <TextBlock x:Name="textBlock9" Grid.Column="1" HorizontalAlignment="Left" Margin="625,8,0,0" TextWrapping="Wrap" Text="Default Browser:" VerticalAlignment="Top"/>
                     <CheckBox x:Name="fridayCheckBox" Content="Manually submit on Friday" Grid.Column="1" HorizontalAlignment="Left" Margin="34,320,0,0" VerticalAlignment="Top" ToolTip="Check this if you want to review the timesheet before submitting.  Leaving this unticked will automatically submit your timesheet on Friday."/>
@@ -61,17 +61,21 @@
                     <TextBlock x:Name="textBlock10" Grid.Column="1" HorizontalAlignment="Left" Margin="0,29,0,0" TextWrapping="Wrap" Text="This has not been implemented yet" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Services">
+            <TabItem Header="About">
                 <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="129*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="textBlock11" Grid.Column="1" HorizontalAlignment="Left" Margin="0,29,0,0" TextWrapping="Wrap" Text="This has not been implemented yet" VerticalAlignment="Top"/>
+                    <TextBlock TextWrapping="Wrap" TextAlignment="Justify" FontSize="13" Margin="10" >
+        <Bold FontFamily="Segoe UI Light" FontSize="70">eTes Automator v0.1</Bold><LineBreak/>
+        Created by: Dave Payne - 2018 (DXC Connect)<LineBreak/><LineBreak/>
+        This is a very early alpha program that will hopefully make life a bit easier for users to submit their timesheets into eTes without manual intervention.<LineBreak/><LineBreak/>
+        It works with Chrome and Firefox for now.  The VIP Access is the hard part in automating this process.  When the program runs its submissions, it will notify you to expect
+        an approval through your mobile.  I may look at automating it via the desktop VIP access, but for now it is what it is.  It will give you a minute to before beginning
+        its automated sequence, at which point it will send a VIP access mobile request.  If you miss it the notification will display that it tried to run.  You can always
+        open the GUI and start it yourself, or I may add once the notification is clicked, it will begin the process again.  In 0.1 you will need to run it manually. 0.2 will
+        bring automated times.  After that I will add a way to change those times to better suit yourself.<LineBreak/><LineBreak/>Expect a Changelog in this tab in the future.
+        Any questions, email me at: <Hyperlink NavigateUri="mailto:dpayne32@csc.com">dpayne32@csc.com</Hyperlink>
+                    </TextBlock>
                 </Grid>
             </TabItem>
-
         </TabControl>
-
     </Grid>
 </Window>
