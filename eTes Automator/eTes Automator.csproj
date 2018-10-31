@@ -139,12 +139,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\Icon1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\etes_TkW_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="images\clock.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
