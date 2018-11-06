@@ -320,17 +320,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_4DAE4764CB654385A96DC4FF9E38111E"
-                    {
-                    "Name" = "8:data"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_EA856307566C4AAD851C64A5D1DA8EFA"
-                        "Folders"
-                        {
-                        }
-                    }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_8E563882CFE747AEB6DC238CDE4CF2FC"
                     {
                     "Name" = "8:images"
@@ -383,7 +372,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:eTes Automator"
         "ProductCode" = "8:{BA65E19F-4183-48FD-AD69-612911271E2B}"
-        "PackageCode" = "8:{1F9F2D0D-7384-4F0B-9A30-6360EF3D721F}"
+        "PackageCode" = "8:{E8039D77-EBD2-4074-A97B-5CA5D11F4BC3}"
         "UpgradeCode" = "8:{CEE09832-2DC3-44ED-875C-63CEB751137B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

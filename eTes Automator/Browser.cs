@@ -7,13 +7,15 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
-
+using System.Windows.Forms;
+using System.Drawing;
+using System.Windows;
 
 namespace eTes_Automator
 {
     class Browser
     {
-        public static IWebDriver browser;        
+        public static IWebDriver browser;
 
         public static void StartBrowserChrome(string Url)
         {
@@ -30,8 +32,8 @@ namespace eTes_Automator
         public static void WaitforBrowser(string title)
         {
             WebDriverWait wait = new WebDriverWait(browser, TimeSpan.FromSeconds(60));
-            //wait.Until<IWebElement>(d => d.FindElement(By.XPath("/html/frameset/frame[1]")));
-            wait.Until((d) => { return d.Title == title;  });
+            wait.Until<IWebElement>(d => d.FindElement(By.XPath("/html/frameset/frame[1]")));
+            wait.Until((d) => { return d.Title == title; });
         }
 
         public static void Close()
@@ -56,7 +58,7 @@ namespace eTes_Automator
         public static void FindNameSendKeys(string Name, string Keys)
         {
             browser.FindElement(By.Name(Name)).SendKeys(Keys);
-            
+
         }
 
         public static void FindNameClear(string Name)
@@ -86,7 +88,7 @@ namespace eTes_Automator
 
         public async static void WorkOrderCheck()
         {
-            //If they are using Firefox, it needs more time to find the element.  So wait 5 secs and then verify that the element list is populated.  If it is, check that
+            //If they are using Firefox, it needs more time to find the element.  So wait 5 secs and then verify that the element list is populated.If it is, check that
             //REGULAR HOURS is in the field, if its not, then its a new work week and new order needs creating.
             if (MainWindow.AppWindow.comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Firefox")
             {
@@ -110,7 +112,7 @@ namespace eTes_Automator
                 {
                     System.Windows.MessageBox.Show("There is a problem with the browser finding the element, please try another browser such as Chrome.");
                     Browser.Close();
-                    MainWindow.AppWindow.btn_start.Content = "Start";                    
+                    MainWindow.AppWindow.btn_start.Content = "Start";
                     return;
                 }
             }
@@ -133,5 +135,27 @@ namespace eTes_Automator
 
             }
         }
+        
+        //public static void CreateNotifyIcon()
+        //{   
+        //    NotifyIcon nIcon = new NotifyIcon();
+        //    MainWindow.AppWindow.ShowInTaskbar = true;
+        //    //Visibility = Visibility.Hidden;
+        //    MainWindow.AppWindow.WindowState = System.Windows.WindowState.Normal;
+        //    nIcon.Icon = new Icon(@"../../images/clock.ico");
+        //    //nIcon.Icon = new Icon(@"images/clock.ico");
+        //    nIcon.Visible = true;
+        //    nIcon.Text = "eTes Automator";
+        //    nIcon.DoubleClick +=
+        //        delegate (object sender, EventArgs args)
+        //        {
+        //            MainWindow.AppWindow.Show();
+        //            MainWindow.AppWindow.WindowState = WindowState.Normal;
+        //        };
+        //    System.Windows.Forms.ContextMenu notifyIconContextMenu = new System.Windows.Forms.ContextMenu();
+        //    notifyIconContextMenu.MenuItems.Add("Quit", new EventHandler(MainWindow.AppWindow.Quit));
+        //    nIcon.ContextMenu = notifyIconContextMenu;
+        //}
+
     }
 }
