@@ -35,190 +35,193 @@ namespace eTes_Automator
         private string decusr = string.Empty;
         private string decpass = string.Empty;
         private string[] settingday = new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-        
+        public static MainWindow AppWindow;
 
         public MainWindow()
         {
+            
             InitializeComponent();
+            AppWindow = this;
 
             // Hide main window when the program begins
             ShowInTaskbar = true;
             //Visibility = Visibility.Hidden;
             //WindowState = System.Windows.WindowState.Normal;
-
             nIcon.Icon = new Icon(@"../../images/clock.ico");
+            //nIcon.Icon = new Icon(@"images/clock.ico");
             nIcon.Visible = true;
             nIcon.Text = "eTes Automator";
             nIcon.DoubleClick +=
-                   delegate (object sender, EventArgs args)
-                   {
-                       this.Show();
-                       this.WindowState = WindowState.Normal;
-                   };
+                delegate (object sender, EventArgs args)
+                {
+                    this.Show();
+                    this.WindowState = WindowState.Normal;
+                };
             System.Windows.Forms.ContextMenu notifyIconContextMenu = new System.Windows.Forms.ContextMenu();
-            notifyIconContextMenu.MenuItems.Add("Quit", new EventHandler(Quit));
-            nIcon.ContextMenu = notifyIconContextMenu;
+                notifyIconContextMenu.MenuItems.Add("Quit", new EventHandler(Quit));
+                nIcon.ContextMenu = notifyIconContextMenu;
 
-            if (File.Exists("data\\data.ls"))
-            {
-                var sr = new StreamReader("data\\data.ls");
-
-                string encusr = sr.ReadLine();
-                string encpass = sr.ReadLine();
-                sr.Close();
-
-                decusr = AesCrypt.Decrypt(encusr);
-                decpass = AesCrypt.Decrypt(encpass);
-
-                textUsername.Text = decusr;
-                textPassword.Text = decpass;
-                passwordBox.Password = decpass;
-
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("Ensure you fill out the login and password details and Apply.");
-            }
-
-            if (!File.Exists("Settings.ini"))
-            {
-                //Create new Settings.ini file
-                var MyIni = new IniFile("Settings.ini");
-
-                //Set default values for days of the week
-                MyIni.Write("Saturday", "", "Week");
-                MyIni.Write("Sunday", "", "Week");
-                MyIni.Write("Monday", "7.50", "Week");
-                MyIni.Write("Tuesday", "7.50", "Week");
-                MyIni.Write("Wednesday", "7.50", "Week");
-                MyIni.Write("Thursday", "7.50", "Week");
-                MyIni.Write("Friday", "7.50", "Week");
-                MyIni.Write("WorkOrder", "1010 REGULAR HOURS", "WorkOrder");
-                MyIni.Write("Wait Time", "15", "Wait Time");
-                MyIni.Write("Browser", "System.Windows.Controls.ComboBoxItem: Chrome", "Browser Choice");
-                MyIni.Write("ManualSubmit", "False", "Submit");
-                MyIni.Write("Reminded", "False", "Reminders");
-
-
-                //Set variables with Settings.ini values
-                //string[] settingday = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };             
-                //TextBox[] textboxes = { textMon, textTue, textWed, textThur, textFri, textSat, textSun };
-                System.Windows.Controls.TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
-                for (int i = 0; i < settingday.Length; i++)
+                if (File.Exists("data\\data.ls"))
                 {
-                    textboxes[i].Text = MyIni.Read(settingday[i], "Week");
-                }
-                textWaittime.Text = (MyIni.Read("Wait Time", "Wait Time"));
-                var browserchoice = MyIni.Read("Browser", "Browser Choice");
-                if (browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
-                {
-                    comboBrowser.SelectedIndex = 0;
+                    var sr = new StreamReader("data\\data.ls");
+
+                    string encusr = sr.ReadLine();
+                    string encpass = sr.ReadLine();
+                    sr.Close();
+
+                    decusr = AesCrypt.Decrypt(encusr);
+                    decpass = AesCrypt.Decrypt(encpass);
+
+                    textUsername.Text = decusr;
+                    textPassword.Text = decpass;
+                    passwordBox.Password = decpass;
+
                 }
                 else
                 {
-                    comboBrowser.SelectedIndex = 1;
+                    System.Windows.MessageBox.Show("Ensure you fill out the login and password details and Apply.");
                 }
 
-                var fridaycheck = MyIni.Read("ManualSubmit", "Submit");
-                if (fridaycheck == "True")
+                if (!File.Exists("Settings.ini"))
                 {
-                    fridayCheckBox.IsChecked = true;
-                }
-                else
-                {
-                    fridayCheckBox.IsChecked = false;
-                }
-                //Check if we need a wait time box, Firefox needs it, Chrome doesnt
-                if (comboBrowser.SelectedIndex == 1)
-                {
-                    textBWait.Visibility = Visibility.Visible;
-                    textWaittime.Visibility = Visibility.Visible;
-                    textBlock8.Visibility = Visibility.Visible;
-                    //Not needed, replaced with one line
-                    //int waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
-                    //textWaittime.Text = Convert.ToString(waittime);
+                    //Create new Settings.ini file
+                    var MyIni = new IniFile("Settings.ini");
+
+                    //Set default values for days of the week
+                    MyIni.Write("Saturday", "", "Week");
+                    MyIni.Write("Sunday", "", "Week");
+                    MyIni.Write("Monday", "7.50", "Week");
+                    MyIni.Write("Tuesday", "7.50", "Week");
+                    MyIni.Write("Wednesday", "7.50", "Week");
+                    MyIni.Write("Thursday", "7.50", "Week");
+                    MyIni.Write("Friday", "7.50", "Week");
+                    MyIni.Write("WorkOrder", "1010 REGULAR HOURS", "WorkOrder");
+                    MyIni.Write("Wait Time", "15", "Wait Time");
+                    MyIni.Write("Browser", "System.Windows.Controls.ComboBoxItem: Chrome", "Browser Choice");
+                    MyIni.Write("ManualSubmit", "False", "Submit");
+                    MyIni.Write("Reminded", "False", "Reminders");
+
+
+                    //Set variables with Settings.ini values
+                    //string[] settingday = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };             
+                    //TextBox[] textboxes = { textMon, textTue, textWed, textThur, textFri, textSat, textSun };
+                    System.Windows.Controls.TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
+                    for (int i = 0; i < settingday.Length; i++)
+                    {
+                        textboxes[i].Text = MyIni.Read(settingday[i], "Week");
+                    }
                     textWaittime.Text = (MyIni.Read("Wait Time", "Wait Time"));
+                    var browserchoice = MyIni.Read("Browser", "Browser Choice");
+                    if (browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
+                    {
+                        comboBrowser.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        comboBrowser.SelectedIndex = 1;
+                    }
 
+                    var fridaycheck = MyIni.Read("ManualSubmit", "Submit");
+                    if (fridaycheck == "True")
+                    {
+                        fridayCheckBox.IsChecked = true;
+                    }
+                    else
+                    {
+                        fridayCheckBox.IsChecked = false;
+                    }
+                    //Check if we need a wait time box, Firefox needs it, Chrome doesnt
+                    if (comboBrowser.SelectedIndex == 1)
+                    {
+                        textBWait.Visibility = Visibility.Visible;
+                        textWaittime.Visibility = Visibility.Visible;
+                        textBlock8.Visibility = Visibility.Visible;
+                        //Not needed, replaced with one line
+                        //int waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
+                        //textWaittime.Text = Convert.ToString(waittime);
+                        textWaittime.Text = (MyIni.Read("Wait Time", "Wait Time"));
+
+                    }
+                    else
+                    {
+                        textBWait.Visibility = Visibility.Hidden;
+                        textWaittime.Visibility = Visibility.Hidden;
+                        textBlock8.Visibility = Visibility.Hidden;
+                    }
                 }
                 else
                 {
-                    textBWait.Visibility = Visibility.Hidden;
-                    textWaittime.Visibility = Visibility.Hidden;
-                    textBlock8.Visibility = Visibility.Hidden;
-                }
-            }
-            else
-            {
-                //Read Settings.ini
-                var MyIni = new IniFile("Settings.ini");
+                    //Read Settings.ini
+                    var MyIni = new IniFile("Settings.ini");
 
-                //string[] settingday = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-                //TextBox[] textboxes = { textMon, textTue, textWed, textThur, textFri, textSat, textSun };
-                System.Windows.Controls.TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
-                for (int i = 0; i < settingday.Length; i++)
-                {
-                    textboxes[i].Text = MyIni.Read(settingday[i], "Week");
-                }
+                    //string[] settingday = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+                    //TextBox[] textboxes = { textMon, textTue, textWed, textThur, textFri, textSat, textSun };
+                    System.Windows.Controls.TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
+                    for (int i = 0; i < settingday.Length; i++)
+                    {
+                        textboxes[i].Text = MyIni.Read(settingday[i], "Week");
+                    }
 
-                var browserchoice = MyIni.Read("Browser", "Browser Choice");
-                if (browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
-                {
-                    comboBrowser.SelectedIndex = 0;
-                }
-                else
-                {
-                    comboBrowser.SelectedIndex = 1;
-                }
-                
-                var fridaycheck = MyIni.Read("ManualSubmit", "Submit");
-                if (fridaycheck == "True")
-                {
-                    fridayCheckBox.IsChecked = true;
-                }
-                else
-                {
-                    fridayCheckBox.IsChecked = false;
-                }
-                //Check if we need a wait time box, Firefox needs it, Chrome doesnt
-                if (comboBrowser.SelectedIndex == 1)
-                {
-                    textBWait.Visibility = Visibility.Visible;
-                    textWaittime.Visibility = Visibility.Visible;
-                    textBlock8.Visibility = Visibility.Visible;
-                    textWaittime.Text = (MyIni.Read("Wait Time", "Wait Time"));
+                    var browserchoice = MyIni.Read("Browser", "Browser Choice");
+                    if (browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
+                    {
+                        comboBrowser.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        comboBrowser.SelectedIndex = 1;
+                    }
 
-                }
-                else
-                {
-                    textBWait.Visibility = Visibility.Hidden;
-                    textWaittime.Visibility = Visibility.Hidden;
-                    textBlock8.Visibility = Visibility.Hidden;
-                }
+                    var fridaycheck = MyIni.Read("ManualSubmit", "Submit");
+                    if (fridaycheck == "True")
+                    {
+                        fridayCheckBox.IsChecked = true;
+                    }
+                    else
+                    {
+                        fridayCheckBox.IsChecked = false;
+                    }
+                    //Check if we need a wait time box, Firefox needs it, Chrome doesnt
+                    if (comboBrowser.SelectedIndex == 1)
+                    {
+                        textBWait.Visibility = Visibility.Visible;
+                        textWaittime.Visibility = Visibility.Visible;
+                        textBlock8.Visibility = Visibility.Visible;
+                        textWaittime.Text = (MyIni.Read("Wait Time", "Wait Time"));
 
-                /*
-                //Set variables with Settings.ini values
-                var monday = MyIni.Read("Monday", "Week");
-                var tuesday = MyIni.Read("Tuesday", "Week");
-                var wednesday = MyIni.Read("Wednesday", "Week");
-                var thursday = MyIni.Read("Thursday", "Week");
-                var friday = MyIni.Read("Friday", "Week");
-                var saturday = MyIni.Read("Saturday", "Week");
-                var sunday = MyIni.Read("Sunday", "Week");
-                //Read the Wait Time value from Settings.ini.  This will control the time between authenticating and finding the frame.
-                waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
+                    }
+                    else
+                    {
+                        textBWait.Visibility = Visibility.Hidden;
+                        textWaittime.Visibility = Visibility.Hidden;
+                        textBlock8.Visibility = Visibility.Hidden;
+                    }
 
-                //Populate the textboxes with the values saved in the ini file
-                textSat.Text = saturday;
-                textSun.Text = sunday;
-                textMon.Text = monday;
-                textTue.Text = tuesday;
-                textWed.Text = wednesday;
-                textThur.Text = thursday;
-                textFri.Text = friday;
-                //Convert Wait time back to a string to populate the text box
-                textWaittime.Text = Convert.ToString(waittime);
-                */
-            }
+                    /*
+                    //Set variables with Settings.ini values
+                    var monday = MyIni.Read("Monday", "Week");
+                    var tuesday = MyIni.Read("Tuesday", "Week");
+                    var wednesday = MyIni.Read("Wednesday", "Week");
+                    var thursday = MyIni.Read("Thursday", "Week");
+                    var friday = MyIni.Read("Friday", "Week");
+                    var saturday = MyIni.Read("Saturday", "Week");
+                    var sunday = MyIni.Read("Sunday", "Week");
+                    //Read the Wait Time value from Settings.ini.  This will control the time between authenticating and finding the frame.
+                    waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
+
+                    //Populate the textboxes with the values saved in the ini file
+                    textSat.Text = saturday;
+                    textSun.Text = sunday;
+                    textMon.Text = monday;
+                    textTue.Text = tuesday;
+                    textWed.Text = wednesday;
+                    textThur.Text = thursday;
+                    textFri.Text = friday;
+                    //Convert Wait time back to a string to populate the text box
+                    textWaittime.Text = Convert.ToString(waittime);
+                    */
+                }
+            
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -383,27 +386,7 @@ namespace eTes_Automator
                 //Switch Frame to the time entries
                 Browser.SwitchFrame("/html/frameset/frame[2]");
 
-                try
-                {
-                    string title2Check = Browser.FindByXpathTitle("/html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a", "title");
-                    if (title2Check != "REGULAR HOURS")
-                    {
-                        System.Windows.MessageBox.Show("Can't create the workorder as it does not follow the standard 1010 REGULAR HOURS expected. Going to close the browser, you will need to create a WORKORDER in the timesheet manually.  Or make sure that the REGULAR HOURS option is the default in the drop-down at page start.");
-                        Browser.Close();
-                        btn_start.Content = "Start";
-                        return;
-
-                    }
-                }
-                catch
-                {
-                    System.Windows.MessageBox.Show("New Week has started, populating Work Order for you now");
-                    string workorder = Browser.browser.FindElement(By.Id("QE")).GetAttribute("value");
-                    if (workorder.Contains("REGULAR HOURS"))
-                    {
-                        Browser.IDClick("addfromqe");
-                    }
-                }
+                Browser.WorkOrderCheck();
 
                 List<string> dayArray = new List<string>();
                 List<string> hoursArray = new List<string>();
