@@ -31,7 +31,7 @@ namespace eTes_Automator
     /// </summary>
     public partial class MainWindow : Window
     {
-        readonly NotifyIcon nIcon = new NotifyIcon();
+        //readonly NotifyIcon nIcon = new NotifyIcon();
 
         private string decusr = string.Empty;
         private string decpass = string.Empty;
@@ -43,24 +43,25 @@ namespace eTes_Automator
 
             InitializeComponent();
             AppWindow = this;
+            Notification.CreateNotify();
 
-            //Hide main window when the program begins
-            ShowInTaskbar = true;
-            //Visibility = Visibility.Hidden;
-            WindowState = System.Windows.WindowState.Normal;
-            nIcon.Icon = new Icon(@"../../images/clock.ico");
-            //nIcon.Icon = new Icon(@"images/clock.ico");
-            nIcon.Visible = true;
-            nIcon.Text = "eTes Automator";
-            nIcon.DoubleClick +=
-                delegate (object sender, EventArgs args)
-                {
-                    this.Show();
-                    this.WindowState = WindowState.Normal;
-                };
-            System.Windows.Forms.ContextMenu notifyIconContextMenu = new System.Windows.Forms.ContextMenu();
-            notifyIconContextMenu.MenuItems.Add("Quit", new EventHandler(Quit));
-            nIcon.ContextMenu = notifyIconContextMenu;
+            ////Hide main window when the program begins
+            //ShowInTaskbar = true;
+            ////Visibility = Visibility.Hidden;
+            //WindowState = System.Windows.WindowState.Normal;
+            //nIcon.Icon = new Icon(@"../../images/clock.ico");
+            ////nIcon.Icon = new Icon(@"images/clock.ico");
+            //nIcon.Visible = true;
+            //nIcon.Text = "eTes Automator";
+            //nIcon.DoubleClick +=
+            //    delegate (object sender, EventArgs args)
+            //    {
+            //        this.Show();
+            //        this.WindowState = WindowState.Normal;
+            //    };
+            //System.Windows.Forms.ContextMenu notifyIconContextMenu = new System.Windows.Forms.ContextMenu();
+            //notifyIconContextMenu.MenuItems.Add("Quit", new EventHandler(Quit));
+            //nIcon.ContextMenu = notifyIconContextMenu;
 
             if (File.Exists("data\\data.ls"))
             {
@@ -214,17 +215,18 @@ namespace eTes_Automator
             if (MyIni.Read("Reminded", "Reminders") == "False")
             {   
 
-                nIcon.ShowBalloonTip(3000, "eTes Automator", "Remember you can quit the application with the right click context menu.", ToolTipIcon.Info);
+                Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Remember you can quit the application with the right click context menu.", ToolTipIcon.Info);
                 MyIni.Write("Reminded", "True", "Reminders");
             }
             base.OnClosing(e);
         }
 
-        public void Quit(object sender, EventArgs e)
-        {
-            nIcon.Dispose();
-            Environment.Exit(0);
-        }
+        //public void Quit(object sender, EventArgs e)
+        //{
+            
+        //    nIcon.Dispose();
+        //    Environment.Exit(0);
+        //}
 
         private void btn_Apply_Click(object sender, RoutedEventArgs e)
         {
@@ -294,8 +296,8 @@ namespace eTes_Automator
         {
             if (btn_start.Content.ToString() == ("Start"))
             {
-                
-                nIcon.ShowBalloonTip(3000, "eTes Automator", "Filling out your timesheet", ToolTipIcon.Info);
+
+                Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Filling out your timesheet", ToolTipIcon.Info);
             }
 
             DateTime currentDateTime = DateTime.Now;
@@ -344,7 +346,8 @@ namespace eTes_Automator
                 //Switch Frame to the time entries
                 Browser.SwitchFrame("/html/frameset/frame[2]");
 
-                Browser.WorkOrderCheck();
+                //Call WorkOrderCheck method - this will see if a new week is required and do some error checking on the timesheet before filling it out
+                TimeSheet.WorkOrderCheck();
 
                 List<string> dayArray = new List<string>();
                 List<string> hoursArray = new List<string>();
@@ -367,12 +370,12 @@ namespace eTes_Automator
                 //Compare the hoursArray and dayArray Lists to see if they are the same...we might not need to do anything!
                 if (hoursmatch == !dayArray.Except(hoursArray).Any())
                 {
-                    nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and whats on the etes page matches", ToolTipIcon.Info);
+                    Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and whats on the etes page matches", ToolTipIcon.Info);
                     //System.Windows.MessageBox.Show("The Settings.ini file and whats on the etes page matches");
                 }
                 else
                 {
-                    nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and the etes website hours do not match...going to try and populate now.", ToolTipIcon.Info);
+                    Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and the etes website hours do not match...going to try and populate now.", ToolTipIcon.Info);
                     //System.Windows.MessageBox.Show("The Settings.ini file and the etes website hours do not match...going to try and populate now.");
                     //Dayoftheweek is based on C# DayOfWeek, Sunday = 0, Monday = 1 etc, so to check Monday it must go through Sat, Sun and then Monday (or two extra days)
                     for (int i = 0; i <= dayoftheweek + 1; i++)
@@ -384,7 +387,7 @@ namespace eTes_Automator
                     }
                     if (dayoftheweek == 5 && fridayCheckBox.IsChecked == true)
                     {
-                        nIcon.ShowBalloonTip(3000, "eTes Automator", "Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.", ToolTipIcon.Info);
+                        Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.", ToolTipIcon.Info);
                         //System.Windows.MessageBox.Show("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
                         return;
                     }
