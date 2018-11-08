@@ -5,24 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using AesEncDec;
 using System.IO;
-using Path = System.IO.Path;
 using OpenQA.Selenium;
-using System.Drawing;
 using System.Windows.Forms;
-using System.Windows.Threading;
 
 namespace eTes_Automator
 {
@@ -33,9 +21,9 @@ namespace eTes_Automator
     {
         //readonly NotifyIcon nIcon = new NotifyIcon();
 
-        private string decusr = string.Empty;
-        private string decpass = string.Empty;
-        private string[] settingday = new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+        public string decusr = string.Empty;
+        public string decpass = string.Empty;
+        public string[] settingday = new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
         public static MainWindow AppWindow;
         
         public MainWindow()
@@ -221,13 +209,6 @@ namespace eTes_Automator
             base.OnClosing(e);
         }
 
-        //public void Quit(object sender, EventArgs e)
-        //{
-            
-        //    nIcon.Dispose();
-        //    Environment.Exit(0);
-        //}
-
         private void btn_Apply_Click(object sender, RoutedEventArgs e)
         {
             if (textUsername.Text.Length < 3 || passwordBox.Password.Length < 5)
@@ -292,132 +273,135 @@ namespace eTes_Automator
             }
         }
 
-        private async void btn_start_Click(object sender, RoutedEventArgs e) //add private async void if need to use async again for wait time.
+        private void btn_start_Click(object sender, RoutedEventArgs e)
         {
-            if (btn_start.Content.ToString() == ("Start"))
-            {
+            TimeSheet.StartTimesheet();
+            
 
-                Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Filling out your timesheet", ToolTipIcon.Info);
-            }
+            //if (btn_start.Content.ToString() == ("Start"))
+            //{
 
-            DateTime currentDateTime = DateTime.Now;
-            int dayoftheweek = (int)currentDateTime.DayOfWeek;
-            if (btn_start.Content as string == "Start" && dayoftheweek >= 1 && dayoftheweek <= 5) //&& currentDateTime.Hour < 17)
-            {
-                var MyIni = new IniFile("Settings.ini");
-                btn_start.Content = "Stop";
-                string etes = "https://etes.csc.com";
-                if (comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Chrome")
-                {
-                    Browser.StartBrowserChrome(etes);
-                    //Enter Username and Password fields of the VIP Access page - using existing saved username and pass
-                    Browser.WaitforBrowser("Sign In");
-                    //await Task.Delay(5000);                
-                    Browser.FindNameSendKeys("UserName", decusr);
-                    Browser.FindNameSendKeys("Password", decpass);
-                    Browser.IDClick("submitButton");
-                    Browser.WaitforBrowser("Internet Time Entry System");
-                }
-                else if (comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Firefox")
-                {
-                    Browser.StartBrowserFirefox(etes);
-                    //Enter Username and Password fields of the VIP Access page - using existing saved username and pass                    
-                    await Task.Delay(5000); //Firefox can't deal with Seleniums explicit wait, so we need to async wait until the page loads.                
-                    Browser.FindNameSendKeys("UserName", decusr);
-                    Browser.FindNameSendKeys("Password", decpass);
-                    Browser.IDClick("submitButton");
+            //    Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Filling out your timesheet", ToolTipIcon.Info);
+            //}
 
-                    //Write the value to the Settings file in case they have changed it without hitting apply.
-                    //Read the waittime value in the Settings.ini so the function waits for the customised time.
-                    MyIni.Write("Wait Time", textWaittime.Text, "Wait Time");
-                    int waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
-                    //Wait the specified amount the user has entered
-                    await Task.Delay(waittime * 1000);
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("Something went wrong with your choice, make sure you have the browser you've chosen installed.");
-                }
+            //DateTime currentDateTime = DateTime.Now;
+            //int dayoftheweek = (int)currentDateTime.DayOfWeek;
+            //if (btn_start.Content as string == "Start" && dayoftheweek >= 1 && dayoftheweek <= 5) //&& currentDateTime.Hour < 17)
+            //{
+            //    var MyIni = new IniFile("Settings.ini");
+            //    btn_start.Content = "Stop";
+            //    string etes = "https://etes.csc.com";
+            //    if (comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Chrome")
+            //    {
+            //        Browser.StartBrowserChrome(etes);
+            //        //Enter Username and Password fields of the VIP Access page - using existing saved username and pass
+            //        Browser.WaitforBrowser("Sign In");
+            //        //await Task.Delay(5000);                
+            //        Browser.FindNameSendKeys("UserName", decusr);
+            //        Browser.FindNameSendKeys("Password", decpass);
+            //        Browser.IDClick("submitButton");
+            //        Browser.WaitforBrowser("Internet Time Entry System");
+            //    }
+            //    else if (comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Firefox")
+            //    {
+            //        Browser.StartBrowserFirefox(etes);
+            //        //Enter Username and Password fields of the VIP Access page - using existing saved username and pass                    
+            //        await Task.Delay(5000); //Firefox can't deal with Seleniums explicit wait, so we need to async wait until the page loads.                
+            //        Browser.FindNameSendKeys("UserName", decusr);
+            //        Browser.FindNameSendKeys("Password", decpass);
+            //        Browser.IDClick("submitButton");
 
-                //Find the MenuBar frame and search and click the TimeSheet button
-                Browser.SwitchFrame("/html/frameset/frame[1]");
-                Browser.FindByXPathClick("/html/body/table/tbody/tr[4]/td/a[5]");
-                Browser.DefaultFrame();
-                //Switch Frame to the time entries
-                Browser.SwitchFrame("/html/frameset/frame[2]");
+            //        //Write the value to the Settings file in case they have changed it without hitting apply.
+            //        //Read the waittime value in the Settings.ini so the function waits for the customised time.
+            //        MyIni.Write("Wait Time", textWaittime.Text, "Wait Time");
+            //        int waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
+            //        //Wait the specified amount the user has entered
+            //        await Task.Delay(waittime * 1000);
+            //    }
+            //    else
+            //    {
+            //        System.Windows.MessageBox.Show("Something went wrong with your choice, make sure you have the browser you've chosen installed.");
+            //    }
 
-                //Call WorkOrderCheck method - this will see if a new week is required and do some error checking on the timesheet before filling it out
-                TimeSheet.WorkOrderCheck();
+            //    //Find the MenuBar frame and search and click the TimeSheet button
+            //    Browser.SwitchFrame("/html/frameset/frame[1]");
+            //    Browser.FindByXPathClick("/html/body/table/tbody/tr[4]/td/a[5]");
+            //    Browser.DefaultFrame();
+            //    //Switch Frame to the time entries
+            //    Browser.SwitchFrame("/html/frameset/frame[2]");
 
-                List<string> dayArray = new List<string>();
-                List<string> hoursArray = new List<string>();
-                List<IWebElement> buttonArray = new List<IWebElement>();
+            //    //Call WorkOrderCheck method - this will see if a new week is required and do some error checking on the timesheet before filling it out
+            //    TimeSheet.WorkOrderCheck();
 
-                //Add the web form values into the dayArray list so we can compare what is in the form and what is in the settings.ini file.
-                for (int i = 0; i < 7; i++)
-                {
-                    buttonArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")));
-                    dayArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")).GetAttribute("value"));
-                }
-                //Read the settings.ini hours into the hoursArray list
-                //TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
-                for (int i = 0; i < settingday.Length; i++)
-                {
-                    hoursArray.Add(MyIni.Read(settingday[i], "Week"));
-                }
+            //    List<string> dayArray = new List<string>();
+            //    List<string> hoursArray = new List<string>();
+            //    List<IWebElement> buttonArray = new List<IWebElement>();
 
-                bool hoursmatch = true;
-                //Compare the hoursArray and dayArray Lists to see if they are the same...we might not need to do anything!
-                if (hoursmatch == !dayArray.Except(hoursArray).Any())
-                {
-                    Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and whats on the etes page matches", ToolTipIcon.Info);
-                    //System.Windows.MessageBox.Show("The Settings.ini file and whats on the etes page matches");
-                }
-                else
-                {
-                    Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and the etes website hours do not match...going to try and populate now.", ToolTipIcon.Info);
-                    //System.Windows.MessageBox.Show("The Settings.ini file and the etes website hours do not match...going to try and populate now.");
-                    //Dayoftheweek is based on C# DayOfWeek, Sunday = 0, Monday = 1 etc, so to check Monday it must go through Sat, Sun and then Monday (or two extra days)
-                    for (int i = 0; i <= dayoftheweek + 1; i++)
-                    {
-                        //Clear the contents of the web field and then input the settings.ini value that was saved in the main form.
-                        buttonArray[i].Clear();
-                        buttonArray[i].SendKeys(hoursArray[i]);
+            //    //Add the web form values into the dayArray list so we can compare what is in the form and what is in the settings.ini file.
+            //    for (int i = 0; i < 7; i++)
+            //    {
+            //        buttonArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")));
+            //        dayArray.Add(Browser.browser.FindElement(By.Name("button" + i + "_0")).GetAttribute("value"));
+            //    }
+            //    //Read the settings.ini hours into the hoursArray list
+            //    //TextBox[] textboxes = { textSat, textSun, textMon, textTue, textWed, textThur, textFri };
+            //    for (int i = 0; i < settingday.Length; i++)
+            //    {
+            //        hoursArray.Add(MyIni.Read(settingday[i], "Week"));
+            //    }
 
-                    }
-                    if (dayoftheweek == 5 && fridayCheckBox.IsChecked == true)
-                    {
-                        Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.", ToolTipIcon.Info);
-                        //System.Windows.MessageBox.Show("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
-                        return;
-                    }
-                    else
-                    {
-                        System.Windows.MessageBoxResult saveYesNo = System.Windows.MessageBox.Show("Would you like to Save the timesheet?", "Save Timesheet", MessageBoxButton.YesNo);
-                        if (saveYesNo == MessageBoxResult.Yes)
-                        {
-                            Browser.DefaultFrame();
-                            Browser.SwitchFrame("/html/frameset/frame[3]");
-                            Browser.FindByXPathClick("/html/body/table/tbody/tr/td/form/a[1]");     //Click Save
-                            Browser.browser.SwitchTo().Alert().Accept();
-                        }
-                        else
-                        {
-                            //System.Windows.MessageBox.Show("You have said NO...noone says no to me!!!!");
-                            return;
-                        }
-                    }
-                }
-            }
-            else if (btn_start.Content as string == "Stop")
-            {
-                Browser.Close();
-                btn_start.Content = "Start";
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-            }
+            //    bool hoursmatch = true;
+            //    //Compare the hoursArray and dayArray Lists to see if they are the same...we might not need to do anything!
+            //    if (hoursmatch == !dayArray.Except(hoursArray).Any())
+            //    {
+            //        Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and whats on the etes page matches", ToolTipIcon.Info);
+            //        //System.Windows.MessageBox.Show("The Settings.ini file and whats on the etes page matches");
+            //    }
+            //    else
+            //    {
+            //        Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and the etes website hours do not match...going to try and populate now.", ToolTipIcon.Info);
+            //        //System.Windows.MessageBox.Show("The Settings.ini file and the etes website hours do not match...going to try and populate now.");
+            //        //Dayoftheweek is based on C# DayOfWeek, Sunday = 0, Monday = 1 etc, so to check Monday it must go through Sat, Sun and then Monday (or two extra days)
+            //        for (int i = 0; i <= dayoftheweek + 1; i++)
+            //        {
+            //            //Clear the contents of the web field and then input the settings.ini value that was saved in the main form.
+            //            buttonArray[i].Clear();
+            //            buttonArray[i].SendKeys(hoursArray[i]);
+
+            //        }
+            //        if (dayoftheweek == 5 && fridayCheckBox.IsChecked == true)
+            //        {
+            //            Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.", ToolTipIcon.Info);
+            //            //System.Windows.MessageBox.Show("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
+            //            return;
+            //        }
+            //        else
+            //        {
+            //            System.Windows.MessageBoxResult saveYesNo = System.Windows.MessageBox.Show("Would you like to Save the timesheet?", "Save Timesheet", MessageBoxButton.YesNo);
+            //            if (saveYesNo == MessageBoxResult.Yes)
+            //            {
+            //                Browser.DefaultFrame();
+            //                Browser.SwitchFrame("/html/frameset/frame[3]");
+            //                Browser.FindByXPathClick("/html/body/table/tbody/tr/td/form/a[1]");     //Click Save
+            //                Browser.browser.SwitchTo().Alert().Accept();
+            //            }
+            //            else
+            //            {
+            //                //System.Windows.MessageBox.Show("You have said NO...noone says no to me!!!!");
+            //                return;
+            //            }
+            //        }
+            //    }
+            //}
+            //else if (btn_start.Content as string == "Stop")
+            //{
+            //    Browser.Close();
+            //    btn_start.Content = "Start";
+            //}
+            //else
+            //{
+            //    System.Windows.MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            //}
         }
 
         private void comboBrowser_DropDownClosed(object sender, EventArgs e)
