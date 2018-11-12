@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace eTes_Automator
 {
@@ -181,11 +179,7 @@ namespace eTes_Automator
                     }
                 }
             }
-            //else if (MainWindow.AppWindow.btn_start.Content as string == "Stop")
-            //{
-            //    Browser.Close();
-            //    MainWindow.AppWindow.btn_start.Content = "Start";
-            //}
+            
             else
             {
                 System.Windows.MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -20,10 +16,10 @@ namespace eTes_Automator
             
             //Hide main window when the program begins
             MainWindow.AppWindow.ShowInTaskbar = true;
-            //Visibility = Visibility.Hidden;
-            MainWindow.AppWindow.WindowState = System.Windows.WindowState.Normal;
-            Globals.nIcon.Icon = new Icon(@"../../images/clock.ico");
-            //nIcon.Icon = new Icon(@"images/clock.ico");
+            MainWindow.AppWindow.Visibility = Visibility.Hidden;
+            //MainWindow.AppWindow.WindowState = System.Windows.WindowState.Normal;
+            //Globals.nIcon.Icon = new Icon(@"../../images/clock.ico");
+            Globals.nIcon.Icon = new Icon(@"images/clock.ico");
             Globals.nIcon.Visible = true;
             Globals.nIcon.Text = "eTes Automator";
             Globals.nIcon.DoubleClick +=

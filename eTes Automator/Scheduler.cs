@@ -2,7 +2,6 @@
 using Quartz.Impl;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace eTes_Automator
 {
@@ -20,7 +19,7 @@ namespace eTes_Automator
 
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("UpdateTSJob ", "Timesheet")
-                .WithCronSchedule("0 52,52 21 ? * MON-FRI")                
+                .WithCronSchedule("0 0 14 ? * MON-FRI")                
                 .StartAt(DateTime.Now)
                 .WithPriority(1)
                 .Build();

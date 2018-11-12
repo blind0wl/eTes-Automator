@@ -6,8 +6,6 @@ using System.ComponentModel;
 using System.Windows;
 using AesEncDec;
 using System.IO;
-using System.Windows.Forms;
-using System.Threading;
 
 namespace eTes_Automator
 {
@@ -428,12 +426,14 @@ namespace eTes_Automator
                 textWaittime.Visibility = Visibility.Visible;
                 textWaittime.Text = (MyIni.Read("Wait Time", "Wait Time"));
                 textBlock8.Visibility = Visibility.Visible;
+                browserchoice = "System.Windows.Controls.ComboBoxItem: Firefox";
             }
             else
             {
                 textBWait.Visibility = Visibility.Hidden;
                 textWaittime.Visibility = Visibility.Hidden;
                 textBlock8.Visibility = Visibility.Hidden;
+                browserchoice = "System.Windows.Controls.ComboBoxItem: Chrome";
             }
 
         }

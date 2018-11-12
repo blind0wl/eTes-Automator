@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8471EFA64C1CC4C34E810168F0A42807"
+        "OwnerKey" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A04C73EAD96BCFFA16FBDC5E9B391B56"
         "OwnerKey" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
         "MsmSig" = "8:_UNDEFINED"
@@ -45,14 +51,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AF4AFB95E99432543FC07A3B63C57E18"
-        "OwnerKey" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
+        "MsmKey" = "8:_BB314089D6CF4ED88870491185EDE204"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BB314089D6CF4ED88870491185EDE204"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_D4086685E79B5F32F04AA85A8E26569F"
+        "OwnerKey" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -64,19 +70,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A04C73EAD96BCFFA16FBDC5E9B391B56"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_AF4AFB95E99432543FC07A3B63C57E18"
+        "OwnerKey" = "8:_8471EFA64C1CC4C34E810168F0A42807"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D4086685E79B5F32F04AA85A8E26569F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A04C73EAD96BCFFA16FBDC5E9B391B56"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -97,6 +109,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -113,6 +141,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -182,6 +218,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8471EFA64C1CC4C34E810168F0A42807"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:WebDriver, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_8471EFA64C1CC4C34E810168F0A42807"
+                    {
+                    "Name" = "8:WebDriver.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:WebDriver.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_28EE7908BC3C49EBBF5A133F91CEBE5A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A04C73EAD96BCFFA16FBDC5E9B391B56"
             {
             "AssemblyRegister" = "3:1"
@@ -233,37 +300,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AF4AFB95E99432543FC07A3B63C57E18"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WebDriver, Version=3.14.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_AF4AFB95E99432543FC07A3B63C57E18"
-                    {
-                    "Name" = "8:WebDriver.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:WebDriver.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_28EE7908BC3C49EBBF5A133F91CEBE5A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BB314089D6CF4ED88870491185EDE204"
             {
             "SourcePath" = "8:..\\eTes Automator\\bin\\Debug\\IEDriverServer.exe"
@@ -282,6 +318,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D4086685E79B5F32F04AA85A8E26569F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Quartz, Version=3.0.7.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D4086685E79B5F32F04AA85A8E26569F"
+                    {
+                    "Name" = "8:Quartz.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Quartz.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_28EE7908BC3C49EBBF5A133F91CEBE5A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E16F578069874664957FD5C01A89E1D2"
@@ -333,6 +400,17 @@
                     }
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_7FB0694B008B46A1B1BF4CEEAB744A8C"
+            {
+            "Name" = "8:#1928"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:StartupFolder"
+                "Folders"
+                {
+                }
+            }
             "{1525181F-901A-416C-8A58-119130FE478E}:_F4B7CAEE39E04082B5E6622759FC9116"
             {
             "Name" = "8:#1919"
@@ -372,7 +450,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:eTes Automator"
         "ProductCode" = "8:{BA65E19F-4183-48FD-AD69-612911271E2B}"
-        "PackageCode" = "8:{E8039D77-EBD2-4074-A97B-5CA5D11F4BC3}"
+        "PackageCode" = "8:{431A282E-0456-432C-B534-199887AE969C}"
         "UpgradeCode" = "8:{CEE09832-2DC3-44ED-875C-63CEB751137B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -518,6 +596,20 @@
             "Folder" = "8:_F4B7CAEE39E04082B5E6622759FC9116"
             "WorkingFolder" = "8:_28EE7908BC3C49EBBF5A133F91CEBE5A"
             "Icon" = "8:_AC544CD5B4E64639866A80DF82B98AE6"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6268DBAB04FA43D9B507A5E2C0D6B3D6"
+            {
+            "Name" = "8:eTes Automator"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
+            "Folder" = "8:_7FB0694B008B46A1B1BF4CEEAB744A8C"
+            "WorkingFolder" = "8:_28EE7908BC3C49EBBF5A133F91CEBE5A"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
         }
