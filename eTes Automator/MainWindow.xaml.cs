@@ -2,15 +2,12 @@
 //eTes Automator for Timesheet automated completion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using AesEncDec;
 using System.IO;
-using OpenQA.Selenium;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace eTes_Automator
 {
@@ -25,13 +22,18 @@ namespace eTes_Automator
         public string decpass = string.Empty;
         public string[] settingday = new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
         public static MainWindow AppWindow;
-        
+        public string browserchoice = string.Empty;
+        public string fridaycheck = string.Empty;
+
+
         public MainWindow()
         {
 
             InitializeComponent();
             AppWindow = this;
             Notification.CreateNotify();
+            Scheduler sc = new Scheduler();
+            sc.Start();
 
             ////Hide main window when the program begins
             //ShowInTaskbar = true;
@@ -89,7 +91,7 @@ namespace eTes_Automator
                 MyIni.Write("Wait Time", "15", "Wait Time");
                 MyIni.Write("Browser", "System.Windows.Controls.ComboBoxItem: Chrome", "Browser Choice");
                 MyIni.Write("ManualSubmit", "False", "Submit");
-                MyIni.Write("Reminded", "False", "Reminders");
+                MyIni.Write("Reminded", "False", "Reminders"); //sets notifyicon to ignore or send the info message about closing from the notification area.
 
 
                 //Set variables with Settings.ini values
@@ -111,7 +113,7 @@ namespace eTes_Automator
                     comboBrowser.SelectedIndex = 1;
                 }
 
-                var fridaycheck = MyIni.Read("ManualSubmit", "Submit");
+                fridaycheck = MyIni.Read("ManualSubmit", "Submit");
                 if (fridaycheck == "True")
                 {
                     fridayCheckBox.IsChecked = true;
@@ -149,7 +151,7 @@ namespace eTes_Automator
                     textboxes[i].Text = MyIni.Read(settingday[i], "Week");
                 }
 
-                var browserchoice = MyIni.Read("Browser", "Browser Choice");
+                browserchoice = MyIni.Read("Browser", "Browser Choice");
                 if (browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
                 {
                     comboBrowser.SelectedIndex = 0;
@@ -201,9 +203,9 @@ namespace eTes_Automator
             this.Hide();
             var MyIni = new IniFile("Settings.ini");
             if (MyIni.Read("Reminded", "Reminders") == "False")
-            {   
-
-                Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Remember you can quit the application with the right click context menu.", ToolTipIcon.Info);
+            {
+                Notification.Bubble("Remember you can quit the application with the right click context menu.");
+                //Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Remember you can quit the application with the right click context menu.", ToolTipIcon.Info);
                 MyIni.Write("Reminded", "True", "Reminders");
             }
             base.OnClosing(e);
@@ -273,9 +275,22 @@ namespace eTes_Automator
             }
         }
 
-        private void btn_start_Click(object sender, RoutedEventArgs e)
+        private async void btn_start_Click(object sender, RoutedEventArgs e)
         {
-            TimeSheet.StartTimesheet();
+            if (MainWindow.AppWindow.btn_start.Content.ToString() == ("Start"))
+            {
+
+                Notification.Bubble("Filling out your timesheet");
+                MainWindow.AppWindow.btn_start.Content = "Stop";                
+                await TimeSheet.StartTimesheet();
+            }
+            else
+            {
+                Browser.Close();
+                MainWindow.AppWindow.btn_start.Content = "Start";
+            }
+
+            
             
 
             //if (btn_start.Content.ToString() == ("Start"))

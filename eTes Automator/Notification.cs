@@ -37,6 +37,11 @@ namespace eTes_Automator
             Globals.nIcon.ContextMenu = notifyIconContextMenu;
         }
 
+        public static void Bubble(String text)
+        {
+            Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", text, ToolTipIcon.Info);
+        }
+
         public static void Quit(object sender, EventArgs e)
         {
             Globals.nIcon.Dispose();

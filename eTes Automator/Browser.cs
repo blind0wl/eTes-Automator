@@ -31,7 +31,7 @@ namespace eTes_Automator
 
         public static void WaitforBrowser(string title)
         {
-            WebDriverWait wait = new WebDriverWait(browser, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(browser, TimeSpan.FromSeconds(60));
             wait.Until((d) => { return d.Title == title; });
         }
 

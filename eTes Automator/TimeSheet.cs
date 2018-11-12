@@ -14,7 +14,8 @@ namespace eTes_Automator
         {
             //If they are using Firefox, it needs more time to find the element.  So wait 5 secs and then verify that the element list is populated.If it is, check that
             //REGULAR HOURS is in the field, if its not, then its a new work week and new order needs creating.
-            if (MainWindow.AppWindow.comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Firefox")
+            if (MainWindow.AppWindow.browserchoice.ToString() == "System.Windows.Controls.ComboBoxItem: Firefox")
+            //if (MainWindow.AppWindow.comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Firefox")
             {
                 await Task.Delay(5000);
                 IList<IWebElement> ffelement = Browser.browser.FindElements(By.XPath("html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a")).ToList();
@@ -42,7 +43,8 @@ namespace eTes_Automator
             }
             else
             {
-                if (Browser.FindByXpathTitle("/html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a", "title") != "REGULAR HOURS")
+                IList<IWebElement> ffelement = Browser.browser.FindElements(By.XPath("html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a")).ToList();
+                if (ffelement.Count == 0)
                 {
                     System.Windows.MessageBox.Show("New Week has started, populating Work Order for you now");
                     string workorder = Browser.browser.FindElement(By.Id("QE")).GetAttribute("value");
@@ -56,26 +58,25 @@ namespace eTes_Automator
                         return;
                     }
                 }
+                else if (Browser.FindByXpathTitle("/html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a", "title") != "REGULAR HOURS")
+                {
+                    System.Windows.MessageBox.Show("Can't create the workorder as it does not follow the standard 1010 REGULAR HOURS expected. Going to close the browser, you will need to create a WORKORDER in the timesheet manually.  Or make sure that the REGULAR HOURS option is the default in the drop-down at page start.");
+                }
 
             }
         }
 
-        public async static void StartTimesheet()
+        public async static Task StartTimesheet()
         {
-            if (MainWindow.AppWindow.btn_start.Content.ToString() == ("Start"))
-            {
-
-                Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Filling out your timesheet", ToolTipIcon.Info);
-            }
-
             DateTime currentDateTime = DateTime.Now;
             int dayoftheweek = (int)currentDateTime.DayOfWeek;
-            if (MainWindow.AppWindow.btn_start.Content as string == "Start" && dayoftheweek >= 1 && dayoftheweek <= 5) //&& currentDateTime.Hour < 17)
+            if (dayoftheweek >= 1 && dayoftheweek <= 5) //&& currentDateTime.Hour < 17)
             {
                 var MyIni = new IniFile("Settings.ini");
-                MainWindow.AppWindow.btn_start.Content = "Stop";
+               
                 string etes = "https://etes.csc.com";
-                if (MainWindow.AppWindow.comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Chrome")
+                //if (MainWindow.AppWindow.comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Chrome")
+                if (MainWindow.AppWindow.browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
                 {
                     Browser.StartBrowserChrome(etes);
                     //Enter Username and Password fields of the VIP Access page - using existing saved username and pass
@@ -86,7 +87,7 @@ namespace eTes_Automator
                     Browser.IDClick("submitButton");
                     Browser.WaitforBrowser("Internet Time Entry System");
                 }
-                else if (MainWindow.AppWindow.comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Firefox")
+                else if (MainWindow.AppWindow.browserchoice == "System.Windows.Controls.ComboBoxItem: Firefox")
                 {
                     Browser.StartBrowserFirefox(etes);
                     //Enter Username and Password fields of the VIP Access page - using existing saved username and pass                    
@@ -138,12 +139,14 @@ namespace eTes_Automator
                 //Compare the hoursArray and dayArray Lists to see if they are the same...we might not need to do anything!
                 if (hoursmatch == !dayArray.Except(hoursArray).Any())
                 {
-                    Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and whats on the etes page matches", ToolTipIcon.Info);
+                    Notification.Bubble("The Settings.ini file and whats on the etes page matches");
+                    //Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and whats on the etes page matches", ToolTipIcon.Info);
                     //System.Windows.MessageBox.Show("The Settings.ini file and whats on the etes page matches");
                 }
                 else
                 {
-                    Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and the etes website hours do not match...going to try and populate now.", ToolTipIcon.Info);
+                    Notification.Bubble("The Settings.ini file and the etes website hours do not match...going to try and populate now.");
+                    //Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "The Settings.ini file and the etes website hours do not match...going to try and populate now.", ToolTipIcon.Info);
                     //System.Windows.MessageBox.Show("The Settings.ini file and the etes website hours do not match...going to try and populate now.");
                     //Dayoftheweek is based on C# DayOfWeek, Sunday = 0, Monday = 1 etc, so to check Monday it must go through Sat, Sun and then Monday (or two extra days)
                     for (int i = 0; i <= dayoftheweek + 1; i++)
@@ -153,9 +156,10 @@ namespace eTes_Automator
                         buttonArray[i].SendKeys(hoursArray[i]);
 
                     }
-                    if (dayoftheweek == 5 && MainWindow.AppWindow.fridayCheckBox.IsChecked == true)
+                    if (dayoftheweek == 5 && MainWindow.AppWindow.fridaycheck.ToString() == "True")
                     {
-                        Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.", ToolTipIcon.Info);
+                        Notification.Bubble("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
+                        //Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.", ToolTipIcon.Info);
                         //System.Windows.MessageBox.Show("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
                         return;
                     }
@@ -177,11 +181,11 @@ namespace eTes_Automator
                     }
                 }
             }
-            else if (MainWindow.AppWindow.btn_start.Content as string == "Stop")
-            {
-                Browser.Close();
-                MainWindow.AppWindow.btn_start.Content = "Start";
-            }
+            //else if (MainWindow.AppWindow.btn_start.Content as string == "Stop")
+            //{
+            //    Browser.Close();
+            //    MainWindow.AppWindow.btn_start.Content = "Start";
+            //}
             else
             {
                 System.Windows.MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
