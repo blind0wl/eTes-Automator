@@ -26,11 +26,10 @@ namespace eTes_Automator
 
 
         public MainWindow()
-        {
-            AutoUpdater.ReportErrors = true;
+        {   
+            AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.Start("http://162.217.248.211/etes/Updater.xml");
-            
-
+         
             InitializeComponent();
             AppWindow = this;
             Notification.CreateNotify();
@@ -243,6 +242,7 @@ namespace eTes_Automator
 
             MyIni.Write("Browser", comboBrowser.SelectedItem.ToString(), "Browser Choice");
             MyIni.Write("ManualSubmit", fridayCheckBox.IsChecked.ToString(), "Submit");
+            var browserchoice = MyIni.Read("Browser", "Browser Choice");
         }
 
         private void btnPassVis_Click(object sender, RoutedEventArgs e)
@@ -264,7 +264,7 @@ namespace eTes_Automator
             if (MainWindow.AppWindow.btn_start.Content.ToString() == ("Start"))
             {
 
-                Notification.Bubble("Filling out your timesheet");
+                Notification.Bubble("Filling out your timesheet, be prepared to authenticate");
                 MainWindow.AppWindow.btn_start.Content = "Stop";                
                 await TimeSheet.StartTimesheet();
             }
@@ -428,6 +428,7 @@ namespace eTes_Automator
         {
             AutoUpdater.ReportErrors = true;
             AutoUpdater.Mandatory = true;
+            AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.Start("http://162.217.248.211/etes/Updater.xml");
         }
     }

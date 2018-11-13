@@ -70,12 +70,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7BB1296A71AF032BA597FFB81B2397B0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_8471EFA64C1CC4C34E810168F0A42807"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -83,6 +77,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D4086685E79B5F32F04AA85A8E26569F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7BB1296A71AF032BA597FFB81B2397B0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -103,7 +103,7 @@
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
-        "Compression" = "3:2"
+        "Compression" = "3:3"
         "SignOutput" = "11:FALSE"
         "CertificateFile" = "8:"
         "PrivateKeyFile" = "8:"
@@ -448,15 +448,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:eTes Automator"
-        "ProductCode" = "8:{BA65E19F-4183-48FD-AD69-612911271E2B}"
-        "PackageCode" = "8:{1854C31B-01FC-45F1-B942-17582362BFB4}"
+        "ProductCode" = "8:{2143708A-767E-4B1A-805B-3765BF4A1DA7}"
+        "PackageCode" = "8:{81C9C422-6689-43EE-9897-DE4AC9567EAE}"
         "UpgradeCode" = "8:{CEE09832-2DC3-44ED-875C-63CEB751137B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.1"
+        "ProductVersion" = "8:0.1.1"
         "Manufacturer" = "8:DXC Connect"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
