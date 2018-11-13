@@ -66,6 +66,9 @@ namespace eTes_Automator
 
         public async static Task StartTimesheet()
         {
+
+            try
+            {
             DateTime currentDateTime = DateTime.Now;
             int dayoftheweek = (int)currentDateTime.DayOfWeek;
             if (dayoftheweek >= 1 && dayoftheweek <= 5) //&& currentDateTime.Hour < 17)
@@ -183,6 +186,14 @@ namespace eTes_Automator
             else
             {
                 System.Windows.MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
+            }
+            catch (Exception)
+            {
+                System.Windows.MessageBox.Show("Something went wrong whilst the browser was trying to navigate the page.  Try again");
+                Browser.Close();
+                MainWindow.AppWindow.btn_start.Content = "Start";
+                throw;
             }
         }
 
