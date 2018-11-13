@@ -21,14 +21,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_694B7B7704344324999D2DAE59135D04"
+        "MsmKey" = "8:_731BF720BBE848B39E9C89E0BE9733BB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_731BF720BBE848B39E9C89E0BE9733BB"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_7BB1296A71AF032BA597FFB81B2397B0"
+        "OwnerKey" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -51,12 +51,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BB314089D6CF4ED88870491185EDE204"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D4086685E79B5F32F04AA85A8E26569F"
         "OwnerKey" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
         "MsmSig" = "8:_UNDEFINED"
@@ -71,6 +65,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_21F5EA7067B84B3682826B742AAE7E4B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7BB1296A71AF032BA597FFB81B2397B0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -148,6 +148,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
     }
@@ -178,26 +186,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_694B7B7704344324999D2DAE59135D04"
-            {
-            "SourcePath" = "8:..\\eTes Automator\\bin\\Debug\\MicrosoftWebDriver.exe"
-            "TargetName" = "8:MicrosoftWebDriver.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_28EE7908BC3C49EBBF5A133F91CEBE5A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_731BF720BBE848B39E9C89E0BE9733BB"
             {
             "SourcePath" = "8:..\\eTes Automator\\bin\\Debug\\chromedriver.exe"
@@ -216,6 +204,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7BB1296A71AF032BA597FFB81B2397B0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AutoUpdater.NET, Version=1.4.11.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_7BB1296A71AF032BA597FFB81B2397B0"
+                    {
+                    "Name" = "8:AutoUpdater.NET.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:AutoUpdater.NET.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_28EE7908BC3C49EBBF5A133F91CEBE5A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8471EFA64C1CC4C34E810168F0A42807"
@@ -286,26 +305,6 @@
             "TargetName" = "8:clock.ico"
             "Tag" = "8:"
             "Folder" = "8:_8E563882CFE747AEB6DC238CDE4CF2FC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BB314089D6CF4ED88870491185EDE204"
-            {
-            "SourcePath" = "8:..\\eTes Automator\\bin\\Debug\\IEDriverServer.exe"
-            "TargetName" = "8:IEDriverServer.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_28EE7908BC3C49EBBF5A133F91CEBE5A"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -450,7 +449,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:eTes Automator"
         "ProductCode" = "8:{BA65E19F-4183-48FD-AD69-612911271E2B}"
-        "PackageCode" = "8:{431A282E-0456-432C-B534-199887AE969C}"
+        "PackageCode" = "8:{1854C31B-01FC-45F1-B942-17582362BFB4}"
         "UpgradeCode" = "8:{CEE09832-2DC3-44ED-875C-63CEB751137B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

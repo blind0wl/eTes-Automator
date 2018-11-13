@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Windows;
 using AesEncDec;
 using System.IO;
+using AutoUpdaterDotNET;
 
 namespace eTes_Automator
 {
@@ -26,31 +27,16 @@ namespace eTes_Automator
 
         public MainWindow()
         {
+            AutoUpdater.ReportErrors = true;
+            AutoUpdater.Start("http://162.217.248.211/etes/Updater.xml");
+            
 
             InitializeComponent();
             AppWindow = this;
             Notification.CreateNotify();
             Scheduler sc = new Scheduler();
             sc.Start();
-
-            ////Hide main window when the program begins
-            //ShowInTaskbar = true;
-            ////Visibility = Visibility.Hidden;
-            //WindowState = System.Windows.WindowState.Normal;
-            //nIcon.Icon = new Icon(@"../../images/clock.ico");
-            ////nIcon.Icon = new Icon(@"images/clock.ico");
-            //nIcon.Visible = true;
-            //nIcon.Text = "eTes Automator";
-            //nIcon.DoubleClick +=
-            //    delegate (object sender, EventArgs args)
-            //    {
-            //        this.Show();
-            //        this.WindowState = WindowState.Normal;
-            //    };
-            //System.Windows.Forms.ContextMenu notifyIconContextMenu = new System.Windows.Forms.ContextMenu();
-            //notifyIconContextMenu.MenuItems.Add("Quit", new EventHandler(Quit));
-            //nIcon.ContextMenu = notifyIconContextMenu;
-
+                        
             if (File.Exists("data\\data.ls"))
             {
                 var sr = new StreamReader("data\\data.ls");
@@ -438,5 +424,11 @@ namespace eTes_Automator
 
         }
 
+        private void BtnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            AutoUpdater.ReportErrors = true;
+            AutoUpdater.Mandatory = true;
+            AutoUpdater.Start("http://162.217.248.211/etes/Updater.xml");
+        }
     }
 }
