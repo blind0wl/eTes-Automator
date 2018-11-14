@@ -63,6 +63,11 @@ namespace eTes_Automator
             browser.FindElement(By.Id(ID)).Click();
         }
 
+        public static void FindByTimeSheetClick()
+        {
+            browser.FindElement(By.XPath("//img[@alt='Time Sheet']")).Click();
+        }
+
         public static void FindByXPathClick(string Xpath)
         {
             browser.FindElement(By.XPath(Xpath)).Click();

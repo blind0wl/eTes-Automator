@@ -111,7 +111,7 @@ namespace eTes_Automator
 
                 //Find the MenuBar frame and search and click the TimeSheet button
                 Browser.SwitchFrame("/html/frameset/frame[1]");
-                Browser.FindByXPathClick("/html/body/table/tbody/tr[4]/td/a[5]");
+                Browser.FindByTimeSheetClick();
                 Browser.DefaultFrame();
                 //Switch Frame to the time entries
                 Browser.SwitchFrame("/html/frameset/frame[2]");

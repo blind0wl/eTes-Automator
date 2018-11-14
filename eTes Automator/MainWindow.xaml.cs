@@ -23,19 +23,20 @@ namespace eTes_Automator
         public static MainWindow AppWindow;
         public string browserchoice = string.Empty;
         public string fridaycheck = string.Empty;
+        public string appliedcheck = string.Empty;
 
 
         public MainWindow()
-        {   
+        {
             AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.Start("http://162.217.248.211/etes/Updater.xml");
-         
+
             InitializeComponent();
             AppWindow = this;
             Notification.CreateNotify();
             Scheduler sc = new Scheduler();
             sc.Start();
-                        
+
             if (File.Exists("data\\data.ls"))
             {
                 var sr = new StreamReader("data\\data.ls");
@@ -54,7 +55,8 @@ namespace eTes_Automator
             }
             else
             {
-                System.Windows.MessageBox.Show("Ensure you fill out the login and password details and Apply.");
+                MessageBox.Show("Ensure you fill out the login and password details and Apply.");
+                Visibility = Visibility.Visible;
             }
 
             if (!File.Exists("Settings.ini"))
@@ -75,6 +77,7 @@ namespace eTes_Automator
                 MyIni.Write("Browser", "System.Windows.Controls.ComboBoxItem: Chrome", "Browser Choice");
                 MyIni.Write("ManualSubmit", "False", "Submit");
                 MyIni.Write("Reminded", "False", "Reminders"); //sets notifyicon to ignore or send the info message about closing from the notification area.
+                MyIni.Write("Applied", "False", "Check"); //checks that user has applied their data before starting browser
 
 
                 //Set variables with Settings.ini values
@@ -112,7 +115,6 @@ namespace eTes_Automator
                     textWaittime.Visibility = Visibility.Visible;
                     textBlock8.Visibility = Visibility.Visible;
                     textWaittime.Text = (MyIni.Read("Wait Time", "Wait Time"));
-
                 }
                 else
                 {
@@ -120,6 +122,8 @@ namespace eTes_Automator
                     textWaittime.Visibility = Visibility.Hidden;
                     textBlock8.Visibility = Visibility.Hidden;
                 }
+                //Read False into appliedcheck to ensure user cant start the program without applying their config.
+                appliedcheck = MyIni.Read("Applied", "Check");
             }
             else
             {
@@ -168,13 +172,15 @@ namespace eTes_Automator
                     textWaittime.Visibility = Visibility.Hidden;
                     textBlock8.Visibility = Visibility.Hidden;
                 }
+                //Read the apply check into the variable so that the Start button can run.  This is required so the user cant start it without applying their username and pass.
+                appliedcheck = MyIni.Read("Applied", "Check");
             }
-            
+
         }
 
         protected override void OnStateChanged(EventArgs e)
         {
-            if (WindowState == System.Windows.WindowState.Minimized)
+            if (WindowState == WindowState.Minimized)
                 this.Hide();
 
             base.OnStateChanged(e);
@@ -198,7 +204,7 @@ namespace eTes_Automator
         {
             if (textUsername.Text.Length < 3 || passwordBox.Password.Length < 5)
             {
-                System.Windows.MessageBox.Show("Username or Password is invalid");
+                MessageBox.Show("Username or Password is invalid");
             }
             else
             {
@@ -213,7 +219,7 @@ namespace eTes_Automator
                 sw.WriteLine(encpass);
                 sw.Close();
 
-                System.Windows.MessageBox.Show(String.Format("User {0} configuration was successfully saved.", textUsername.Text));
+                MessageBox.Show(String.Format("User {0} configuration was successfully saved.", textUsername.Text));
 
                 var sr = new StreamReader("data\\data.ls");
 
@@ -242,7 +248,11 @@ namespace eTes_Automator
 
             MyIni.Write("Browser", comboBrowser.SelectedItem.ToString(), "Browser Choice");
             MyIni.Write("ManualSubmit", fridayCheckBox.IsChecked.ToString(), "Submit");
-            var browserchoice = MyIni.Read("Browser", "Browser Choice");
+            browserchoice = MyIni.Read("Browser", "Browser Choice");
+            //Once apply is clicked write true to the settings.ini file and then read it into our public string of appliedcheck so that when start checks it will allow it through
+            MyIni.Write("Applied", "True", "Check");
+            appliedcheck = MyIni.Read("Applied", "Check");
+
         }
 
         private void btnPassVis_Click(object sender, RoutedEventArgs e)
@@ -261,21 +271,24 @@ namespace eTes_Automator
 
         private async void btn_start_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.AppWindow.btn_start.Content.ToString() == ("Start"))
+            if (appliedcheck == "False")
             {
-
-                Notification.Bubble("Filling out your timesheet, be prepared to authenticate");
-                MainWindow.AppWindow.btn_start.Content = "Stop";                
-                await TimeSheet.StartTimesheet();
+                MessageBox.Show("Please apply your changes before starting the automated timesheet.");
             }
             else
             {
-                Browser.Close();
-                MainWindow.AppWindow.btn_start.Content = "Start";
+                if (btn_start.Content.ToString() == ("Start"))
+                {
+                    Notification.Bubble("Filling out your timesheet, be prepared to authenticate");
+                    btn_start.Content = "Stop";
+                    await TimeSheet.StartTimesheet();
+                }
+                else
+                {
+                    Browser.Close();
+                    btn_start.Content = "Start";
+                }
             }
-
-            
-            
 
             //if (btn_start.Content.ToString() == ("Start"))
             //{
