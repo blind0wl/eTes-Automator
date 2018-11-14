@@ -76,13 +76,11 @@ namespace eTes_Automator
                 var MyIni = new IniFile("Settings.ini");
                
                 string etes = "https://etes.csc.com";
-                //if (MainWindow.AppWindow.comboBrowser.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Chrome")
                 if (MainWindow.AppWindow.browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
                 {
                     Browser.StartBrowserChrome(etes);
                     //Enter Username and Password fields of the VIP Access page - using existing saved username and pass
                     Browser.WaitforBrowser("Sign In");
-                    //await Task.Delay(5000);                
                     Browser.FindNameSendKeys("UserName", MainWindow.AppWindow.decusr);
                     Browser.FindNameSendKeys("Password", MainWindow.AppWindow.decpass);
                     Browser.IDClick("submitButton");
@@ -118,7 +116,7 @@ namespace eTes_Automator
 
                 //Call WorkOrderCheck method - this will see if a new week is required and do some error checking on the timesheet before filling it out
                 WorkOrderCheck();
-
+                
                 List<string> dayArray = new List<string>();
                 List<string> hoursArray = new List<string>();
                 List<IWebElement> buttonArray = new List<IWebElement>();
@@ -160,9 +158,7 @@ namespace eTes_Automator
                     if (dayoftheweek == 5 && MainWindow.AppWindow.fridaycheck.ToString() == "True")
                     {
                         Notification.Bubble("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
-                        //Notification.Globals.nIcon.ShowBalloonTip(3000, "eTes Automator", "Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.", ToolTipIcon.Info);
-                        //System.Windows.MessageBox.Show("Please review your timesheet.  If you need to add further details, now is the time to do so. Please submit manually if you need to edit any entries on the timesheet.");
-                        return;
+                        //return;
                     }
                     else
                     {
