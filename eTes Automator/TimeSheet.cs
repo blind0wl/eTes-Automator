@@ -141,6 +141,11 @@ namespace eTes_Automator
                     if (hoursmatch == !dayArray.Except(hoursArray).Any())
                     {
                         Notification.Bubble("The Settings.ini file and whats on the etes page matches");
+                        if (MainWindow.AppWindow.browserclose == "True")
+                        {
+                            await Task.Delay(1000);
+                            Browser.Close();
+                        }
                     }
                     else
                     {
@@ -161,20 +166,19 @@ namespace eTes_Automator
                             return;
                         }
                         else
-                        {
-                            //System.Windows.MessageBoxResult saveYesNo = System.Windows.MessageBox.Show("Would you like to Save the timesheet?", "Save Timesheet", System.Windows.MessageBoxButton.YesNo);
-                            //if (saveYesNo == System.Windows.MessageBoxResult.Yes)
-                            //{
-                                Browser.DefaultFrame();
-                                Browser.SwitchFrame("/html/frameset/frame[3]");
-                                Browser.FindByXPathClick("/html/body/table/tbody/tr/td/form/a[1]");     //Click Save
-                                Browser.browser.SwitchTo().Alert().Accept();
-                            //}
-                            //else
-                            //{
-                                //System.Windows.MessageBox.Show("You have said NO...noone says no to me!!!!");
-                                //return;
-                            //}
+                        {                            
+                            Browser.DefaultFrame();
+                            Browser.SwitchFrame("/html/frameset/frame[3]");
+                            Browser.FindByXPathClick("/html/body/table/tbody/tr/td/form/a[1]");     //Click Save
+                            Browser.browser.SwitchTo().Alert().Accept();
+
+                            if (MainWindow.AppWindow.browserclose == "True")
+                            {
+                                await Task.Delay(1000);
+                                Browser.Close();
+                                MainWindow.AppWindow.btn_start.Content = "Start";
+                                Notification.Bubble("Timesheet has been updated and saved.");
+                            }
                         }
                     }
                 }

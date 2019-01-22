@@ -16,6 +16,17 @@ namespace eTes_Automator
             browser.Navigate().GoToUrl(Url);
         }
 
+        public static void StartBrowserChromeHeadless(string Url) //This is broken atm, gpu issue, no fix in sight atm
+        {
+            var browserOptions = new ChromeOptions();
+            browserOptions.AddArgument("headless");
+            browserOptions.AddArgument("disable-gpu");
+            using (browser = new ChromeDriver(browserOptions))
+            {
+                browser.Navigate().GoToUrl(Url);
+            }
+        }
+
         public static void StartBrowserFirefox(string Url)
         {
             browser = new FirefoxDriver();

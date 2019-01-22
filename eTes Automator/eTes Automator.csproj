@@ -107,6 +107,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Notification.cs" />
+    <Compile Include="SalesForce.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="TimeSheet.cs" />
     <Page Include="MainWindow.xaml">

@@ -7,7 +7,7 @@
         Title="eTes Automator v0.1" Height="450" Width="800" MinHeight="450" MinWidth="800" MaxHeight="450" MaxWidth="800" WindowStartupLocation="CenterScreen" Icon="images\clock.ico">
     <Grid>
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="792">
-            <TabItem x:Name="tabConfiguration" Header="Configuration">
+            <TabItem x:Name="tabConfiguration" Header="Timesheet">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
@@ -49,21 +49,30 @@
                         <ComboBoxItem Content="Firefox" HorizontalAlignment="Left" Width="118"/>
                     </ComboBox>
                     <TextBlock x:Name="textBlock9" Grid.Column="1" HorizontalAlignment="Left" Margin="625,8,0,0" TextWrapping="Wrap" Text="Default Browser:" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="fridayCheckBox" Content="Manually submit on Friday" Grid.Column="1" HorizontalAlignment="Left" Margin="34,320,0,0" VerticalAlignment="Top" ToolTip="Check this if you want to review the timesheet before submitting.  Leaving this unticked will automatically submit your timesheet on Friday."/>
+                    <TextBlock x:Name="textBlock11" HorizontalAlignment="Left" Height="25" Margin="485,110,0,0" TextWrapping="Wrap" Text="Additional Options" VerticalAlignment="Top" Width="100" Grid.Column="1"/>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="205" Margin="485,130,0,0" VerticalAlignment="Top" Width="245">
+                        <CheckBox x:Name="ChkCloseAfterUpdate" Content="Close browser after updating timesheet" Margin="9,29,-1,155"/>
+                    </Border>
+                    <CheckBox x:Name="fridayCheckBox" Content="Manually submit on Friday" Grid.Column="1" HorizontalAlignment="Left" Margin="495,140,0,0" VerticalAlignment="Top" ToolTip="Check this if you want to review the timesheet before submitting.  Leaving this unticked will automatically submit your timesheet on Friday." IsChecked="True"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Log">
+            <TabItem Header="Other">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="129*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="textBlock10" Grid.Column="1" HorizontalAlignment="Left" Margin="0,29,0,0" TextWrapping="Wrap" Text="This has not been implemented yet" VerticalAlignment="Top"/>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="360" Margin="7,10,0,0" VerticalAlignment="Top" Width="415">
+                        <CheckBox x:Name="ChkSalesForce" Content="Salesforce Autologin" Margin="9,9,109,334" Checked="ChkSalesForce_Checked" Unchecked="ChkSalesForce_Unchecked"/>
+
+                    </Border>
+                    <Button x:Name="ButtonSF" Content="Run SF" Grid.Column="1" HorizontalAlignment="Left" Margin="155,17,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSF_Click"/>
+                    <CheckBox x:Name="CheckSFHeadless" Content="Headless" Grid.Column="1" HorizontalAlignment="Left" Margin="245,20,0,0" VerticalAlignment="Top" IsEnabled="False"/>
                 </Grid>
             </TabItem>
             <TabItem Header="About">
                 <Grid Background="#FFE5E5E5">
-                    <TextBlock TextWrapping="Wrap" TextAlignment="Justify" FontSize="13" Margin="10" ><Run FontWeight="Bold" FontSize="70" FontFamily="Segoe UI Light" Text="eTes Automator v0."/><Run FontWeight="Bold" FontSize="70" FontFamily="Segoe UI Light" Text="1"/><Run FontWeight="Bold" FontSize="70" FontFamily="Segoe UI Light" Text=".4"/><LineBreak/><Run Text="Created by: Dave Payne - 2018 (DXC Connect)"/><LineBreak/><LineBreak/><Run Text="This is a very early alpha program that will hopefully make life a bit easier for users to submit their timesheets into eTes without manual intervention."/><LineBreak/><LineBreak/><Run Text="It works with Chrome and Firefox for now. The VIP Access is the hard part in automating this process. When the program runs its submissions, it will notify you to expect an approval through your mobile. I may look at automating it via the desktop VIP access, but for now it is what it is. It will give you a minute to before beginning its automated sequence, at which point it will send a VIP access mobile request. If you miss it the notification will display that it tried to run. You can always open the GUI and start it yourself, or I may add once the notification is clicked, it will begin the process again. In 0.1 you will need to run it manually. 0.2 will bring automated times. After that I will add a way to change those times to better suit yourself."/><LineBreak/><LineBreak/><Run Text="Expect a Change"/><InlineUIContainer/><Run Text="log in this tab in the future. Any questions, email me at: "/><Hyperlink NavigateUri="mailto:dpayne32@csc.com"><Run Text="dpayne32@csc.com"/></Hyperlink></TextBlock>
+                    <TextBlock TextWrapping="Wrap" TextAlignment="Justify" FontSize="13" Margin="10" ><Run FontWeight="Bold" FontSize="70" FontFamily="Segoe UI Light" Text="eTes Automator v0."/><Run FontWeight="Bold" FontSize="70" FontFamily="Segoe UI Light" Text="1"/><Run FontWeight="Bold" FontSize="70" FontFamily="Segoe UI Light" Text=".5"/><LineBreak/><Run Text="Created by: Dave Payne - 2018 (DXC Connect)"/><LineBreak/><LineBreak/><Run Text="This is a very early alpha program that will hopefully make life a bit easier for users to submit their timesheets into eTes without manual intervention."/><LineBreak/><LineBreak/><Run Text="It works with Chrome and Firefox for now. The VIP Access is the hard part in automating this process. When the program runs its submissions, it will notify you to expect an approval through your mobile. I may look at automating it via the desktop VIP access, but for now it is what it is. It will give you a minute to before beginning its automated sequence, at which point it will send a VIP access mobile request. If you miss it the notification will display that it tried to run. You can always open the GUI and start it yourself, or I may add once the notification is clicked, it will begin the process again. In 0.1 you will need to run it manually. 0.2 will bring automated times. After that I will add a way to change those times to better suit yourself."/><LineBreak/><LineBreak/><Run Text="Expect a Change"/><InlineUIContainer/><Run Text="log in this tab in the future. Any questions, email me at: "/><Hyperlink NavigateUri="mailto:dpayne32@csc.com"><Run Text="dpayne32@csc.com"/></Hyperlink></TextBlock>
                     <Button x:Name="BtnUpdate" Content="Update" Margin="662,335,49,31" Click="BtnUpdate_Click"/>
                 </Grid>
             </TabItem>

@@ -18,8 +18,8 @@ namespace eTes_Automator
             MainWindow.AppWindow.ShowInTaskbar = true;
             MainWindow.AppWindow.Visibility = Visibility.Hidden;
             //MainWindow.AppWindow.WindowState = System.Windows.WindowState.Normal;
-            Globals.nIcon.Icon = new Icon(@"../../images/clock.ico");
-            //Globals.nIcon.Icon = new Icon(@"images/clock.ico");
+            //Globals.nIcon.Icon = new Icon(@"../../images/clock.ico");
+            Globals.nIcon.Icon = new Icon(@"images/clock.ico");
             Globals.nIcon.Visible = true;
             Globals.nIcon.Text = "eTes Automator";
             Globals.nIcon.DoubleClick +=

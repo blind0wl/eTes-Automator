@@ -1,4 +1,4 @@
-﻿//Version 0.1 - Dave Payne 2018
+﻿//Version 0.1.5 - Dave Payne 2018
 //eTes Automator for Timesheet automated completion
 
 using System;
@@ -24,18 +24,20 @@ namespace eTes_Automator
         public string browserchoice = string.Empty;
         public string fridaycheck = string.Empty;
         public string appliedcheck = string.Empty;
+        public string browserclose = string.Empty;
 
 
         public MainWindow()
         {
             AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.Start("http://162.217.248.211/etes/Updater.xml");
-
+            
             InitializeComponent();
             AppWindow = this;
             Notification.CreateNotify();
             Scheduler sc = new Scheduler();
             sc.Start();
+            
 
             if (File.Exists("data\\data.ls"))
             {
@@ -78,6 +80,8 @@ namespace eTes_Automator
                 MyIni.Write("ManualSubmit", "False", "Submit");
                 MyIni.Write("Reminded", "False", "Reminders"); //sets notifyicon to ignore or send the info message about closing from the notification area.
                 MyIni.Write("Applied", "False", "Check"); //checks that user has applied their data before starting browser
+                MyIni.Write("SalesForce", "False", "Check"); //sets salesforce autologin option at setting.ini creation (off by default)
+                MyIni.Write("CloseBrowser", "False", "Check"); //sets whether to close the browser after updating the timesheet or not.  (off by default)
 
 
                 //Set variables with Settings.ini values
@@ -89,6 +93,7 @@ namespace eTes_Automator
                     textboxes[i].Text = MyIni.Read(settingday[i], "Week");
                 }
                 textWaittime.Text = (MyIni.Read("Wait Time", "Wait Time"));
+
                 var browserchoice = MyIni.Read("Browser", "Browser Choice");
                 if (browserchoice == "System.Windows.Controls.ComboBoxItem: Chrome")
                 {
@@ -98,7 +103,8 @@ namespace eTes_Automator
                 {
                     comboBrowser.SelectedIndex = 1;
                 }
-
+                
+                //Check if the Submit on Friday checkbox is checked or not and apply the correct check against the check object
                 fridaycheck = MyIni.Read("ManualSubmit", "Submit");
                 if (fridaycheck == "True")
                 {
@@ -108,6 +114,21 @@ namespace eTes_Automator
                 {
                     fridayCheckBox.IsChecked = false;
                 }
+                
+                //Check if the Close Browser checkbox is checked or not and apply the correct check against the check object
+                browserclose = MyIni.Read("CloseBrowser", "Check");
+                if (browserclose == "True")
+                {
+                    ChkCloseAfterUpdate.IsChecked = true;
+                }
+                else
+                {
+                    ChkCloseAfterUpdate.IsChecked = false;
+                }
+
+                //Read the apply check into the variable so that the Start button can run.  This is required so the user cant start it without applying their username and pass.
+                var appliedcheck = MyIni.Read("Applied", "Check");
+               
                 //Check if we need a wait time box, Firefox needs it, Chrome doesnt
                 if (comboBrowser.SelectedIndex == 1)
                 {
@@ -157,6 +178,18 @@ namespace eTes_Automator
                 {
                     fridayCheckBox.IsChecked = false;
                 }
+
+                //Check if the Close Browser checkbox is checked or not and apply the correct check against the check object
+                var browserclose = MyIni.Read("CloseBrowser", "Check");
+                if (browserclose == "True")
+                {
+                    ChkCloseAfterUpdate.IsChecked = true;
+                }
+                else
+                {
+                    ChkCloseAfterUpdate.IsChecked = false;
+                }
+
                 //Check if we need a wait time box, Firefox needs it, Chrome doesnt
                 if (comboBrowser.SelectedIndex == 1)
                 {
@@ -173,9 +206,20 @@ namespace eTes_Automator
                     textBlock8.Visibility = Visibility.Hidden;
                 }
                 //Read the apply check into the variable so that the Start button can run.  This is required so the user cant start it without applying their username and pass.
-                appliedcheck = MyIni.Read("Applied", "Check");
+                var appliedcheck = MyIni.Read("Applied", "Check");
+                //Read the Settings.ini file to see if we need to set the checkbox true or false.
+                if (MyIni.Read("SalesForce", "Check") == "True")
+                {
+                    ChkSalesForce.IsChecked = true;
+                    //If the checkbox for salesforce is checked, run the salesforce automation schedule.The ?? false is because IsChecked is an interdeminable bool, so it can be true, false, or null.The ?? tells it, if its null then just set it false.
+                    //Scheduler sf = new Scheduler();
+                    //sf.SFStart();
+                }
+                else
+                {
+                    ChkSalesForce.IsChecked = false;
+                }
             }
-
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -248,7 +292,9 @@ namespace eTes_Automator
 
             MyIni.Write("Browser", comboBrowser.SelectedItem.ToString(), "Browser Choice");
             MyIni.Write("ManualSubmit", fridayCheckBox.IsChecked.ToString(), "Submit");
+            MyIni.Write("CloseBrowser", ChkCloseAfterUpdate.IsChecked.ToString(), "Check");
             browserchoice = MyIni.Read("Browser", "Browser Choice");
+            browserclose = MyIni.Read("CloseBrowser", "Check");
             //Once apply is clicked write true to the settings.ini file and then read it into our public string of appliedcheck so that when start checks it will allow it through
             MyIni.Write("Applied", "True", "Check");
             appliedcheck = MyIni.Read("Applied", "Check");
@@ -279,6 +325,10 @@ namespace eTes_Automator
             {
                 if (btn_start.Content.ToString() == ("Start"))
                 {
+                    var MyIni = new IniFile("Settings.ini");
+                    browserchoice = MyIni.Read("Browser", "Browser Choice");
+                    browserclose = MyIni.Read("CloseBrowser", "Check");
+                    appliedcheck = MyIni.Read("Applied", "Check");
                     Notification.Bubble("Filling out your timesheet, be prepared to authenticate");
                     btn_start.Content = "Stop";
                     await TimeSheet.StartTimesheet();
@@ -443,6 +493,28 @@ namespace eTes_Automator
             AutoUpdater.Mandatory = true;
             AutoUpdater.RunUpdateAsAdmin = true;
             AutoUpdater.Start("http://162.217.248.211/etes/Updater.xml");
+        }
+
+        private async void ButtonSF_Click(object sender, RoutedEventArgs e)
+        {
+
+            await SalesForce.Automate();
+        }
+
+        private void ChkSalesForce_Checked(object sender, RoutedEventArgs e)
+        {
+            var MyIni = new IniFile("Settings.ini");
+            MyIni.Write("SalesForce", "True", "Check");
+            Scheduler sf = new Scheduler();
+            sf.SFStart();
+        }
+
+        private void ChkSalesForce_Unchecked(object sender, RoutedEventArgs e)
+        {
+            var MyIni = new IniFile("Settings.ini");
+            MyIni.Write("SalesForce", "False", "Check");
+            Scheduler sf = new Scheduler();
+            sf.InterruptSF();
         }
     }
 }
