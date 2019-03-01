@@ -22,6 +22,7 @@ namespace eTes_Automator
         public string[] settingday = new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
         public static MainWindow AppWindow;
         public string browserchoice = string.Empty;
+        public string securitychoice = string.Empty;
         public string fridaycheck = string.Empty;
         public string appliedcheck = string.Empty;
         public string browserclose = string.Empty;
@@ -77,6 +78,7 @@ namespace eTes_Automator
                 MyIni.Write("WorkOrder", "1010 REGULAR HOURS", "WorkOrder");
                 MyIni.Write("Wait Time", "15", "Wait Time");
                 MyIni.Write("Browser", "System.Windows.Controls.ComboBoxItem: Chrome", "Browser Choice");
+                MyIni.Write("Security", "System.Windows.Controls.ComboBoxItem: VIP App (PC)", "Security Choice");
                 MyIni.Write("ManualSubmit", "False", "Submit");
                 MyIni.Write("Reminded", "False", "Reminders"); //sets notifyicon to ignore or send the info message about closing from the notification area.
                 MyIni.Write("Applied", "False", "Check"); //checks that user has applied their data before starting browser
@@ -103,7 +105,17 @@ namespace eTes_Automator
                 {
                     comboBrowser.SelectedIndex = 1;
                 }
-                
+
+                var securitychoice = MyIni.Read("Security", "Security Choice");
+                if (securitychoice == "System.Windows.Controls.ComboBoxItem: VIP App (PC)")
+                {
+                    comboSecurity.SelectedIndex = 0;
+                }
+                else
+                {
+                    comboSecurity.SelectedIndex = 1;
+                }
+
                 //Check if the Submit on Friday checkbox is checked or not and apply the correct check against the check object
                 fridaycheck = MyIni.Read("ManualSubmit", "Submit");
                 if (fridaycheck == "True")
@@ -167,6 +179,16 @@ namespace eTes_Automator
                 else
                 {
                     comboBrowser.SelectedIndex = 1;
+                }
+
+                securitychoice = MyIni.Read("Security", "Security Choice");
+                if (securitychoice == "System.Windows.Controls.ComboBoxItem: VIP App (PC)")
+                {
+                    comboSecurity.SelectedIndex = 0;
+                }
+                else
+                {
+                    comboSecurity.SelectedIndex = 1;
                 }
 
                 var fridaycheck = MyIni.Read("ManualSubmit", "Submit");
@@ -291,8 +313,10 @@ namespace eTes_Automator
             }
 
             MyIni.Write("Browser", comboBrowser.SelectedItem.ToString(), "Browser Choice");
+            MyIni.Write("Security", comboSecurity.SelectedItem.ToString(), "Security Choice");
             MyIni.Write("ManualSubmit", fridayCheckBox.IsChecked.ToString(), "Submit");
             MyIni.Write("CloseBrowser", ChkCloseAfterUpdate.IsChecked.ToString(), "Check");
+            securitychoice = MyIni.Read("Security", "Security Choice");
             browserchoice = MyIni.Read("Browser", "Browser Choice");
             browserclose = MyIni.Read("CloseBrowser", "Check");
             //Once apply is clicked write true to the settings.ini file and then read it into our public string of appliedcheck so that when start checks it will allow it through
@@ -327,6 +351,7 @@ namespace eTes_Automator
                 {
                     var MyIni = new IniFile("Settings.ini");
                     browserchoice = MyIni.Read("Browser", "Browser Choice");
+                    securitychoice = MyIni.Read("Security", "Security Choice");
                     browserclose = MyIni.Read("CloseBrowser", "Check");
                     appliedcheck = MyIni.Read("Applied", "Check");
                     Notification.Bubble("Filling out your timesheet, be prepared to authenticate");

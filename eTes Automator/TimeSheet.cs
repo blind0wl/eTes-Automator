@@ -84,6 +84,15 @@ namespace eTes_Automator
                         Browser.FindNameSendKeys("UserName", MainWindow.AppWindow.decusr);
                         Browser.FindNameSendKeys("Password", MainWindow.AppWindow.decpass);
                         Browser.IDClick("submitButton");
+                        //Security Decision
+                        if (MainWindow.AppWindow.securitychoice == "System.Windows.Controls.ComboBoxItem: VIP App (PC)")
+                        {
+                            VIPAccess.StartVIP();
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                        }
                         Browser.WaitforBrowser("Internet Time Entry System");
                     }
                     else if (MainWindow.AppWindow.browserchoice == "System.Windows.Controls.ComboBoxItem: Firefox")

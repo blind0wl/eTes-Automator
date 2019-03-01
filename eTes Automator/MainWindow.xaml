@@ -54,6 +54,11 @@
                         <CheckBox x:Name="ChkCloseAfterUpdate" Content="Close browser after updating timesheet" Margin="9,29,-1,155"/>
                     </Border>
                     <CheckBox x:Name="fridayCheckBox" Content="Manually submit on Friday" Grid.Column="1" HorizontalAlignment="Left" Margin="495,140,0,0" VerticalAlignment="Top" ToolTip="Check this if you want to review the timesheet before submitting.  Leaving this unticked will automatically submit your timesheet on Friday." IsChecked="True"/>
+                    <ComboBox x:Name="comboSecurity" Grid.Column="1" HorizontalAlignment="Left" Margin="625,73,0,0" VerticalAlignment="Top" Width="120" DropDownClosed="comboBrowser_DropDownClosed">
+                        <ComboBoxItem Content="VIP App (PC)" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="Mobile VIP" HorizontalAlignment="Left" Width="118"/>
+                    </ComboBox>
+                    <TextBlock x:Name="textBlock_def_Security" Grid.Column="1" HorizontalAlignment="Left" Margin="625,55,0,0" TextWrapping="Wrap" Text="Default Security:" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Other">
