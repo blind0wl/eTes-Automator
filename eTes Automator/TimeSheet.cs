@@ -87,13 +87,12 @@ namespace eTes_Automator
                         //Security Decision
                         if (MainWindow.AppWindow.securitychoice == "System.Windows.Controls.ComboBoxItem: VIP App (PC)")
                         {
-                            VIPAccess.StartVIP();
+                            VIPAccess.GetVIPProcessID();
                         }
                         else
                         {
-                            System.Windows.MessageBox.Show("", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                            Browser.WaitforBrowser("Internet Time Entry System");
                         }
-                        Browser.WaitforBrowser("Internet Time Entry System");
                     }
                     else if (MainWindow.AppWindow.browserchoice == "System.Windows.Controls.ComboBoxItem: Firefox")
                     {

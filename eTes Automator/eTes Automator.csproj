@@ -56,10 +56,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3581C3D92E5DF188AF2E7B26F93A89FC7F7F52E2</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A05354767C17F48DB4FC87CE037542EDAC0F421C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>eTes Automator_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>eTes Automator_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -148,6 +148,7 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="eTes Automator_1_TemporaryKey.pfx" />
     <None Include="eTes Automator_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
