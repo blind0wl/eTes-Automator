@@ -41,11 +41,11 @@ namespace eTes_Automator
 
         public static int GetVIPProcessID()
         {
-            //int VIPID = 0;
+            int VIPID = 0;
             Process[] pname = Process.GetProcessesByName("VIPUIManager");
             if (pname.Length != 0)
             {
-                int VIPID = pname[0].Id;
+                VIPID = pname[0].Id;
             }
             else
             {
@@ -82,7 +82,7 @@ namespace eTes_Automator
             IntPtr hwndChild = IntPtr.Zero;
 
             hwndChild = FindWindowEx((IntPtr)VIPID, IntPtr.Zero, "Button", "Copy");
-            SendMessage((int)hwndChild, BN_CLICKED, 0, IntPtr.Zero);
+            //SendMessage((int)hwndChild, BN_CLICKED, 0, IntPtr.Zero);
 
         }
 
