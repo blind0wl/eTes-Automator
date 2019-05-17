@@ -5,6 +5,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using FlaUI.Core.Tools;
+using FlaUI.UIA3;
+
+
 
 namespace eTes_Automator
 {
@@ -25,67 +29,85 @@ namespace eTes_Automator
 
         public int VIPID = 0;
 
-        public static void GetVIPAccess()
+        public static void GetVIPProcessID()
         {
-            var VIPProcess = GetVIPProcessID();
-            if (VIPProcess != 0)
-            {
-                System.Windows.MessageBox.Show(String.Format("Found VIP Process ID running on {0} and process name {1}", VIPProcess.ToString(), GetProcessName(VIPProcess)));
-
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("Did not find VIP Access....wtf.");
-            }
-        }
-
-        public static int GetVIPProcessID()
-        {
+            //Check to see if VIP is already running.  Looks for VIPUIManager as a running process and either copies the process ID into a variable and attaches it to FlaUI so the button can
+            //be found.  Otherwise it uses the FlaUI library to start the application.
             int VIPID = 0;
             Process[] pname = Process.GetProcessesByName("VIPUIManager");
             if (pname.Length != 0)
             {
                 VIPID = pname[0].Id;
+                var app = FlaUI.Core.Application.Attach(VIPID);
+                //System.Windows.MessageBox.Show("Found already running VIP");
+                Retry.WhileException(() =>
+                {
+                    using (var automation = new UIA3Automation())
+                    {
+                        var window = app.GetMainWindow(automation);
+                        window.Focus();
+                        //System.Windows.MessageBox.Show(window.Title);
+
+                        var copybtn = window.FindFirstDescendant(cf => cf.ByName("Copy Security code"));
+                        copybtn.AsButton().Click();
+                    }
+                    app.Close();
+                }, TimeSpan.FromSeconds(30), retryInterval: null);
             }
             else
             {
-                VIPAccess myProcess = new VIPAccess();
-                myProcess.OpenVIP();
-                Process[] pname2 = Process.GetProcessesByName("VIPUIManager");
-                if (pname2.Length != 0)
+                var app = FlaUI.Core.Application.Launch(@"C:\Program Files (x86)\Symantec\VIP Access Client\VIPUIManager.exe");
+                Retry.WhileException(() =>
                 {
-                    VIPID = pname2[0].Id;
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("VIP Access won't open.");
-                    
-                }
+
+                    using (var automation = new UIA3Automation())
+                    {
+                        var window = app.GetMainWindow(automation);
+                        //System.Windows.MessageBox.Show(window.Title);
+                        window.SetForeground();
+                        var copybtn = window.FindFirstDescendant(cf => cf.ByName("Copy Security code"));
+                        copybtn.AsButton().Click();
+                    }
+                    app.Close();
+                }, TimeSpan.FromSeconds(30), retryInterval: null);
             }
-            return VIPID;
+
+            //int VIPID = 0;
+            //Process[] pname = Process.GetProcessesByName("VIPUIManager");
+            //if (pname.Length != 0)
+            //{
+            //    VIPID = pname[0].Id;
+            //    System.Windows.MessageBox.Show("Found already running VIP");
+            //}
+            //else
+            //{
+            //    System.Windows.MessageBox.Show("Did not find VIP Access...trying to open it now");
+            //    VIPAccess myProcess = new VIPAccess();
+            //    myProcess.OpenVIP();
+            //    Process[] pname2 = Process.GetProcessesByName("VIPUIManager");
+            //    if (pname2.Length != 0)
+            //    {
+            //        VIPID = pname2[0].Id;
+            //        System.Windows.MessageBox.Show("VIP Should be open now.");
+            //    }
+            //    else
+            //    {
+            //        System.Windows.MessageBox.Show("VIP Access won't open.");
+                    
+            //    }
+            //}
+            //return VIPID;
         }
 
-        public static string GetProcessName(int processID)
-        {
-            var process = Process.GetProcessById(processID);
-            return process.ProcessName;
-        }
+        //public static string GetProcessName(int processID)
+        //{
+        //    var process = Process.GetProcessById(processID);
+        //    return process.ProcessName;
+        //}
 
-        void OpenVIP()
-        {
-            Process.Start(@"C:\Program Files (x86)\Symantec\VIP Access Client\VIPUIManager.exe");
-        }
-
-        void CopyCredID()
-        {
-            
-            IntPtr hwndChild = IntPtr.Zero;
-
-            hwndChild = FindWindowEx((IntPtr)VIPID, IntPtr.Zero, "Button", "Copy");
-            //SendMessage((int)hwndChild, BN_CLICKED, 0, IntPtr.Zero);
-
-        }
-
-        
+        //void OpenVIP()
+        //{
+        //    Process.Start(@"C:\Program Files (x86)\Symantec\VIP Access Client\VIPUIManager.exe");
+        //}
     }
 }

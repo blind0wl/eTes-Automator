@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace eTes_Automator
 {
@@ -84,15 +85,16 @@ namespace eTes_Automator
                         Browser.FindNameSendKeys("UserName", MainWindow.AppWindow.decusr);
                         Browser.FindNameSendKeys("Password", MainWindow.AppWindow.decpass);
                         Browser.IDClick("submitButton");
-                        //Security Decision
                         if (MainWindow.AppWindow.securitychoice == "System.Windows.Controls.ComboBoxItem: VIP App (PC)")
                         {
+                            Browser.WaitforBrowser("VIP Authentication Provider");
+                            await Task.Delay(3000);
                             VIPAccess.GetVIPProcessID();
+                            string getText = Clipboard.GetText();
+                            Browser.FindNameSendKeys("otpInput", getText);
+                            Browser.IDClick("vipSubmitOTP");
                         }
-                        else
-                        {
-                            Browser.WaitforBrowser("Internet Time Entry System");
-                        }
+                        Browser.WaitforBrowser("Internet Time Entry System");
                     }
                     else if (MainWindow.AppWindow.browserchoice == "System.Windows.Controls.ComboBoxItem: Firefox")
                     {
@@ -108,6 +110,16 @@ namespace eTes_Automator
                         MyIni.Write("Wait Time", MainWindow.AppWindow.textWaittime.Text, "Wait Time");
                         int waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
                         //Wait the specified amount the user has entered
+                        await Task.Delay(waittime * 1000);
+                        if (MainWindow.AppWindow.securitychoice == "System.Windows.Controls.ComboBoxItem: VIP App (PC)")
+                        {
+                            Browser.WaitforBrowser("VIP Authentication Provider");
+                            await Task.Delay(3000);
+                            VIPAccess.GetVIPProcessID();
+                            string getText = Clipboard.GetText();
+                            Browser.FindNameSendKeys("otpInput", getText);
+                            Browser.IDClick("vipSubmitOTP");
+                        }
                         await Task.Delay(waittime * 1000);
                     }
                     else

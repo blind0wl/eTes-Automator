@@ -354,7 +354,8 @@ namespace eTes_Automator
                     securitychoice = MyIni.Read("Security", "Security Choice");
                     browserclose = MyIni.Read("CloseBrowser", "Check");
                     appliedcheck = MyIni.Read("Applied", "Check");
-                    Notification.Bubble("Filling out your timesheet, be prepared to authenticate");
+                    //Causing issues with copy of VIP ID
+                    //Notification.Bubble("Filling out your timesheet, be prepared to authenticate");
                     btn_start.Content = "Stop";
                     await TimeSheet.StartTimesheet();
                 }

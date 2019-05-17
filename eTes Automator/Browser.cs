@@ -60,8 +60,9 @@ namespace eTes_Automator
 
         public static void FindNameSendKeys(string Name, string Keys)
         {
+            WebDriverWait wait = new WebDriverWait(browser, TimeSpan.FromSeconds(60));
+            wait.Until((d) => { return d.FindElement(By.Name(Name)); });
             browser.FindElement(By.Name(Name)).SendKeys(Keys);
-
         }
 
         public static void FindNameClear(string Name)
