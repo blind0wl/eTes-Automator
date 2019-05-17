@@ -45,7 +45,7 @@ namespace eTes_Automator
                 IList<IWebElement> ffelement = Browser.browser.FindElements(By.XPath("html/body/form/table[3]/tbody/tr/td/table[1]/tbody/tr[2]/td[1]/left/a")).ToList();
                 if (ffelement.Count == 0)
                 {
-                    System.Windows.MessageBox.Show("New Week has started, populating Work Order for you now");
+                    Notification.Bubble("New Week has started, populating Work Order for you now");
                     string workorder = Browser.browser.FindElement(By.Id("QE")).GetAttribute("value");
                     if (workorder.Contains("REGULAR HOURS"))
                     {
@@ -110,7 +110,7 @@ namespace eTes_Automator
                         MyIni.Write("Wait Time", MainWindow.AppWindow.textWaittime.Text, "Wait Time");
                         int waittime = Convert.ToInt32(MyIni.Read("Wait Time", "Wait Time"));
                         //Wait the specified amount the user has entered
-                        await Task.Delay(waittime * 1000);
+                        await Task.Delay(3000);
                         if (MainWindow.AppWindow.securitychoice == "System.Windows.Controls.ComboBoxItem: VIP App (PC)")
                         {
                             Browser.WaitforBrowser("VIP Authentication Provider");
@@ -202,10 +202,10 @@ namespace eTes_Automator
                         }
                     }
                 }
-
                 else
                 {
                     System.Windows.MessageBox.Show("It's not during the work week, sorry, we can't edit unless its Mon-Fri (before 5pm).", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    MainWindow.AppWindow.btn_start.Content = "Start";
                 }
             }
             catch (Exception)
